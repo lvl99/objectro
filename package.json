@@ -1,14 +1,17 @@
 {
-  "name": "oql",
+  "name": "jsoql",
   "version": "0.1.0",
-  "description": "Object Query Language - destructure, filter and validate object data",
+  "description": "JavaScript Object Query Language - transform (destructure and format), filter and validate object data",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "javascript",
     "object",
+    "transform",
     "destructure",
+    "format",
     "filter",
     "validate"
   ],

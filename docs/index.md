@@ -1,3 +1,3 @@
-# `oql`: Object Query Language
+# JavaScript Object Query Language
 
-Transform, filter and validate objects.
+Transform (destructure and format), filter and validate objects.
