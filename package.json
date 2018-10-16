@@ -1,0 +1,17 @@
+{
+  "name": "oql",
+  "version": "0.1.0",
+  "description": "Object Query Language - destructure, filter and validate object data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "object",
+    "destructure",
+    "filter",
+    "validate"
+  ],
+  "author": "Matt Scheurich <matt@lvl99.com>",
+  "license": "MIT"
+}
