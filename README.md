@@ -20,6 +20,12 @@ ES6 already allows us to do object destructuring, but sometimes we need somethin
 
 Objectro allows you to transform objects similar to GraphQL, taking only the properties that you specify, additionally changing the property names on the outputted object:
 
+```
+  {
+    fromPropertyName: "toPropertyName"
+  }
+```
+
 ```javascript
   const objectro = require("objectro")
 
@@ -74,14 +80,25 @@ You could also just feed it a number of property names as well as transform maps
 
 #### Format
 
-Alongside destructuring, you can also format values:
+Alongside destructuring, you can also format values with a function. The function can either return the formatted value or return an object that will be merged into the destination object:
+
+```
+  {
+    fromPropertyName: formatValue(
+      fromPropertyValue: any,
+      fromPropertyName: string,
+      source: object,
+      destination: object
+    ) -> mergeIntoDestinationObject: object
+  }
+```
 
 ```javascript
   const transformedObject = objectro.transform(sourceObject, {
     // Format the source property's value from a string to a Date
     dateOfBirth: value => new Date(value),
     // Transform the source object's property into a different format
-    name: (value, srcObj, destObj) => {
+    name: (value, propName, srcObj) => {
       // Format the value however you want...
       let [firstName, ...lastNames] = value.split(" ")
       // ... then return an object which will be merged with the
@@ -93,7 +110,7 @@ Alongside destructuring, you can also format values:
     },
     // Parameter `value` will be undefined since `canSpeakEnglish` is
     // not on the source object
-    canSpeakEnglish: (value, srcObj) => ({
+    canSpeakEnglish: (value, propName, srcObj) => ({
       canSpeakEnglish: srcObj.languages.includes("en")
     })
   })
