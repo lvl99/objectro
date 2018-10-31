@@ -53,7 +53,7 @@ Objectro allows you to transform objects similar to GraphQL, taking only the pro
 You could also just feed it a number of property names as well as transform maps:
 
 ```javascript
-  const transformedObject = jsoq.transform(sourceObject, "nationality", "location", {
+  const transformedObject = objectro.transform(sourceObject, "nationality", "location", {
     name: "fullName",
     nationality: "placeOfBirth",
     location: "countryOfResidence"
@@ -77,7 +77,7 @@ You could also just feed it a number of property names as well as transform maps
 Alongside destructuring, you can also format values:
 
 ```javascript
-  const transformedObject = jsoq.transform(sourceObject, {
+  const transformedObject = objectro.transform(sourceObject, {
     // Format the source property's value from a string to a Date
     dateOfBirth: value => new Date(value),
     // Transform the source object's property into a different format
@@ -112,10 +112,10 @@ Alongside destructuring, you can also format values:
 
 ### Validate
 
-`jsoq.validate()` allows you to check if an object matches a set of conditions:
+`objectro.validate()` allows you to check if an object matches a set of conditions:
 
 ```javascript
-  const jsoq = require("jsoq")
+  const objectro = require("objectro")
 
   const sourceObject = {
     name: "Matt Scheurich",
@@ -125,7 +125,7 @@ Alongside destructuring, you can also format values:
     languages: ["en", "fr"]
   }
 
-  jsoq.validate(sourceObject, {
+  objectro.validate(sourceObject, {
     languages: "en",
     nationality: "nz"
   }) // returns true because sourceObject.nationality is "nz"
@@ -135,7 +135,7 @@ Alongside destructuring, you can also format values:
 You can also feed it an array of accepted values:
 
 ```javascript
-  jsoq.validate(sourceObject, {
+  objectro.validate(sourceObject, {
     languages: ["fr", "de", "it"],
     location: ["fr", "de", "it"]
   }) // returns true because sourceObject.languages has a value of "fr"
@@ -147,29 +147,29 @@ You can also feed it an array of accepted values:
 ### Browser
 
 ```html
-  <script src="//unpkg.com/jsoq@0.1.0/dist/jsoq.min.js"></script>
+  <script src="//unpkg.com/objectro@0.1.0/dist/objectro.min.js"></script>
   <script>
-    // window.oql should then be available
-    console.log(jsoq)
+    // window.objectro should then be available
+    console.log(objectro)
   </script>
 ```
 
 ### ES Module
 
 ```bash
-  npm i jsoq
-  yarn add jsoq
+  npm i objectro
+  yarn add objectro
 ```
 
 Then in your source code:
 
 ```javascript
   // ES5
-  const jsoq = require("jsoq")
+  const objectro = require("objectro")
 
   // ES6
-  import jsoq from "jsoq"
-  import { transform, validate } from "jsoq"
+  import objectro from "objectro"
+  import { transform, validate } from "objectro"
 ```
 
 ## Development
@@ -188,16 +188,10 @@ To run tests (using Jest):
 
 ## Contribute
 
-Got cool ideas? Have questions? Found a bug? [Post an issue](https://github.com/lvl99/jsoq/issues)
+Got cool ideas? Have questions or feedback? Found a bug? [Post an issue](https://github.com/lvl99/objectro/issues)
 
-Added a feature? Fixed a bug? [Post a PR](https://github.com/lvl99/jsoq/compare)
+Added a feature? Fixed a bug? [Post a PR](https://github.com/lvl99/objectro/compare)
 
 ## License
 
-Copyright 2018 Matt Scheurich.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[MIT](LICENSE.md)
