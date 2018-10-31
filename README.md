@@ -5,8 +5,8 @@ Transform and validate objects.
 ## Why?
 
 * Destructure/restructure objects based on a map
-* Format specific values
-* Validate an object based on specific properties
+* Format specific values (sanitise, normalise, etc.)
+* Validate an object based on rules
 
 ### Transform
 
