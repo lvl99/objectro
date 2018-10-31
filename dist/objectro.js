@@ -17477,7 +17477,9 @@ function validate_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 /**
- * Default options
+ * Default validate options.
+ *
+ * @type {ValidationOptions}
  */
 
 var DEFAULT_OPTIONS = {
