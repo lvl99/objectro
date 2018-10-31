@@ -1,3 +1,3 @@
-# JavaScript Object Query Language
+# Objectro
 
-Transform (destructure and format), filter and validate objects.
+Transform and validate objects.

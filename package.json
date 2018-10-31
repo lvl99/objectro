@@ -1,20 +1,31 @@
 {
-  "name": "jsoql",
+  "name": "objectro",
   "version": "0.1.0",
-  "description": "JavaScript Object Query Language - transform (destructure and format), filter and validate object data",
+  "description": "Transform, destructure, format, filter and validate object data",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch"
   },
   "keywords": [
     "javascript",
     "object",
     "transform",
     "destructure",
+    "restructure",
     "format",
     "filter",
     "validate"
   ],
   "author": "Matt Scheurich <matt@lvl99.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "lodash": "^4.17.11"
+  }
 }
