@@ -28,11 +28,30 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
+    "eslint": "^5.8.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.2",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
+    "lint-staged": "^8.0.4",
     "lodash": "^4.17.11",
+    "prettier": "^1.14.3",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "post-merge": "yarn",
+      "post-checkout": "yarn"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn eslint --fix",
+      "git add"
+    ]
   }
 }
