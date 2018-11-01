@@ -6,6 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "lint": "eslint . --ignore-path .lintignore",
+    "lint:fix": "eslint . --ignore-path .lintignore",
     "test": "jest",
     "test:watch": "jest --watch",
     "deploy": "yarn test && yarn build"
@@ -26,6 +28,7 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "eslint": "^5.8.0",
@@ -43,14 +46,15 @@
   },
   "husky": {
     "hooks": {
+      "post-commit": "git update-index --again",
       "pre-commit": "lint-staged",
       "post-merge": "yarn",
-      "post-checkout": "yarn"
+      "pre-push": "yarn test"
     }
   },
   "lint-staged": {
     "*.js": [
-      "yarn eslint --fix",
+      "yarn lint",
       "git add"
     ]
   }
