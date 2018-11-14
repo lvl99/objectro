@@ -27,7 +27,7 @@ Objectro allows you to transform objects similar to GraphQL, taking only the pro
 ```
 
 ```javascript
-  const objectro = require("objectro")
+  const objectro = require("objectro").default
 
   const sourceObject = {
     name: "Matt Scheurich",

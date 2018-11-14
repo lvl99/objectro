@@ -35,7 +35,7 @@ Then in your source code:
 
 ```javascript
   // ES5
-  const objectro = require("objectro")
+  const objectro = require("objectro").default
 
   // ES6
   import objectro from "objectro"
