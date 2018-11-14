@@ -51,7 +51,7 @@ Transform and validate objects.
   objectro.validate(
     {
       name: "Objectro",
-      version: "0.1.1",
+      version: "0.1.3",
       lastUpdated: "2018-11-14",
       keywords: ["transform", "validate", "object", "javascript"],
       randomNumber: 123,
