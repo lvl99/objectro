@@ -1,7 +1,3 @@
-# Objectro
-
-Transform and validate objects.
-
 ## Why?
 
 * [Destructure/restructure](#destructure-restructure) objects based on a map
