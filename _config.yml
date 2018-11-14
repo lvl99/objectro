@@ -1,1 +1,4 @@
 theme: jekyll-theme-cayman
+title: "Objectro"
+description: "Transform and validate objects"
+show_downloads: true
