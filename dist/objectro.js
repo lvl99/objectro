@@ -1,5 +1,5 @@
 /*!
- * objectro v0.1.1 by Matt Scheurich <matt@lvl99.com>
+ * objectro v0.1.2 by Matt Scheurich <matt@lvl99.com>
  * @see https://github.com/lvl99/objectro/LICENSE.md for full license info
  */
 (function webpackUniversalModuleDefinition(root, factory) {

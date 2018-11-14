@@ -10,8 +10,7 @@
     "lint:fix": "eslint . --ignore-path .lintignore",
     "test": "jest",
     "test:watch": "jest --watch",
-    "deploy": "yarn test && yarn build",
-    "publish": "yarn deploy && npm publish"
+    "publish": "npm publish"
   },
   "keywords": [
     "javascript",
