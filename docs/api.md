@@ -286,6 +286,8 @@ There are three types of rules:
 | `startsWith` | Expression | Check if input starts with a value |
 | `endsWith` | Expression | Check if input ends with a value |
 | `contains` | Expression | Check if input (string or array) contains value |
+| `includesAny` | Expression | Check if input includes any values |
+| `includesAll` | Expression | Check if input includes all values |
 
 There are more [specialised rules](https://github.com/lvl99/objectro/blob/8a63bbf24d235936d70d9a292a7d231c3995f880/lib/validate.js#L101) available.
 

@@ -1,5 +1,5 @@
 /*!
- * objectro v0.1.3 by Matt Scheurich <matt@lvl99.com>
+ * objectro v0.1.4 by Matt Scheurich <matt@lvl99.com>
  * @see https://github.com/lvl99/objectro/LICENSE.md for full license info
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -170,7 +170,7 @@ module.exports = isArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(3),
-    isObject = __webpack_require__(7);
+    isObject = __webpack_require__(8);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -246,6 +246,56 @@ module.exports = baseGetTag;
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var isArray = __webpack_require__(1);
+
+/**
+ * Casts `value` as an array if it's not one.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.4.0
+ * @category Lang
+ * @param {*} value The value to inspect.
+ * @returns {Array} Returns the cast array.
+ * @example
+ *
+ * _.castArray(1);
+ * // => [1]
+ *
+ * _.castArray({ 'a': 1 });
+ * // => [{ 'a': 1 }]
+ *
+ * _.castArray('abc');
+ * // => ['abc']
+ *
+ * _.castArray(null);
+ * // => [null]
+ *
+ * _.castArray(undefined);
+ * // => [undefined]
+ *
+ * _.castArray();
+ * // => []
+ *
+ * var array = [1, 2, 3];
+ * console.log(_.castArray(array) === array);
+ * // => true
+ */
+function castArray() {
+  if (!arguments.length) {
+    return [];
+  }
+  var value = arguments[0];
+  return isArray(value) ? value : [value];
+}
+
+module.exports = castArray;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var baseGetTag = __webpack_require__(3),
     getPrototype = __webpack_require__(44),
     isObjectLike = __webpack_require__(0);
@@ -311,7 +361,7 @@ module.exports = isPlainObject;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(46);
@@ -350,7 +400,7 @@ module.exports = get;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var freeGlobal = __webpack_require__(25);
@@ -365,7 +415,7 @@ module.exports = root;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /**
@@ -402,7 +452,7 @@ module.exports = isObject;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsNative = __webpack_require__(55),
@@ -425,7 +475,7 @@ module.exports = getNative;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(3),
@@ -461,7 +511,7 @@ module.exports = isString;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(3),
@@ -505,7 +555,7 @@ module.exports = isNumber;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /**
@@ -533,56 +583,6 @@ function isNil(value) {
 }
 
 module.exports = isNil;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isArray = __webpack_require__(1);
-
-/**
- * Casts `value` as an array if it's not one.
- *
- * @static
- * @memberOf _
- * @since 4.4.0
- * @category Lang
- * @param {*} value The value to inspect.
- * @returns {Array} Returns the cast array.
- * @example
- *
- * _.castArray(1);
- * // => [1]
- *
- * _.castArray({ 'a': 1 });
- * // => [{ 'a': 1 }]
- *
- * _.castArray('abc');
- * // => ['abc']
- *
- * _.castArray(null);
- * // => [null]
- *
- * _.castArray(undefined);
- * // => [undefined]
- *
- * _.castArray();
- * // => []
- *
- * var array = [1, 2, 3];
- * console.log(_.castArray(array) === array);
- * // => true
- */
-function castArray() {
-  if (!arguments.length) {
-    return [];
-  }
-  var value = arguments[0];
-  return isArray(value) ? value : [value];
-}
-
-module.exports = castArray;
 
 
 /***/ }),
@@ -663,7 +663,7 @@ module.exports = isSymbol;
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8);
+var getNative = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate = getNative(Object, 'create');
@@ -783,7 +783,7 @@ module.exports = nodeUtil;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isNumber = __webpack_require__(10);
+var isNumber = __webpack_require__(11);
 
 /**
  * Checks if `value` is `NaN`.
@@ -827,7 +827,7 @@ module.exports = isNaN;
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(6);
+var root = __webpack_require__(7);
 
 /** Built-in value references. */
 var Symbol = root.Symbol;
@@ -1022,8 +1022,8 @@ module.exports = toSource;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8),
-    root = __webpack_require__(6);
+var getNative = __webpack_require__(9),
+    root = __webpack_require__(7);
 
 /* Built-in method references that are verified to be native. */
 var Map = getNative(root, 'Map');
@@ -1430,7 +1430,7 @@ module.exports = isUndefined;
 
 var baseGetTag = __webpack_require__(3),
     isObjectLike = __webpack_require__(0),
-    isPlainObject = __webpack_require__(4);
+    isPlainObject = __webpack_require__(5);
 
 /** `Object#toString` result references. */
 var domExcTag = '[object DOMException]',
@@ -1944,7 +1944,7 @@ module.exports = hashClear;
 
 var isFunction = __webpack_require__(2),
     isMasked = __webpack_require__(56),
-    isObject = __webpack_require__(7),
+    isObject = __webpack_require__(8),
     toSource = __webpack_require__(27);
 
 /**
@@ -2021,7 +2021,7 @@ module.exports = isMasked;
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(6);
+var root = __webpack_require__(7);
 
 /** Used to detect overreaching core-js shims. */
 var coreJsData = root['__core-js_shared__'];
@@ -2666,7 +2666,7 @@ module.exports = toFinite;
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(7),
+var isObject = __webpack_require__(8),
     isSymbol = __webpack_require__(14);
 
 /** Used as references for various `Number` constants. */
@@ -2762,8 +2762,8 @@ module.exports = baseIsMap;
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8),
-    root = __webpack_require__(6);
+var getNative = __webpack_require__(9),
+    root = __webpack_require__(7);
 
 /* Built-in method references that are verified to be native. */
 var DataView = getNative(root, 'DataView');
@@ -2775,8 +2775,8 @@ module.exports = DataView;
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8),
-    root = __webpack_require__(6);
+var getNative = __webpack_require__(9),
+    root = __webpack_require__(7);
 
 /* Built-in method references that are verified to be native. */
 var Promise = getNative(root, 'Promise');
@@ -2788,8 +2788,8 @@ module.exports = Promise;
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8),
-    root = __webpack_require__(6);
+var getNative = __webpack_require__(9),
+    root = __webpack_require__(7);
 
 /* Built-in method references that are verified to be native. */
 var Set = getNative(root, 'Set');
@@ -2801,8 +2801,8 @@ module.exports = Set;
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(8),
-    root = __webpack_require__(6);
+var getNative = __webpack_require__(9),
+    root = __webpack_require__(7);
 
 /* Built-in method references that are verified to be native. */
 var WeakMap = getNative(root, 'WeakMap');
@@ -3079,7 +3079,7 @@ module.exports = isIndex;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isString.js
-var isString = __webpack_require__(9);
+var isString = __webpack_require__(10);
 var isString_default = /*#__PURE__*/__webpack_require__.n(isString);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isArray.js
@@ -3087,7 +3087,7 @@ var isArray = __webpack_require__(1);
 var isArray_default = /*#__PURE__*/__webpack_require__.n(isArray);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isPlainObject.js
-var isPlainObject = __webpack_require__(4);
+var isPlainObject = __webpack_require__(5);
 var isPlainObject_default = /*#__PURE__*/__webpack_require__.n(isPlainObject);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isFunction.js
@@ -3095,11 +3095,11 @@ var isFunction = __webpack_require__(2);
 var isFunction_default = /*#__PURE__*/__webpack_require__.n(isFunction);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isNil.js
-var isNil = __webpack_require__(11);
+var isNil = __webpack_require__(12);
 var isNil_default = /*#__PURE__*/__webpack_require__.n(isNil);
 
 // EXTERNAL MODULE: ./node_modules/lodash/castArray.js
-var castArray = __webpack_require__(12);
+var castArray = __webpack_require__(4);
 var castArray_default = /*#__PURE__*/__webpack_require__.n(castArray);
 
 // CONCATENATED MODULE: ./lib/transform.js
@@ -3127,45 +3127,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * (which can allow deeper destructuring).
  *
  * Functions can be used in object maps which can format the input object's
- * value:
- *
- * ```
- *   let input = {
- *     test1: 1,
- *     testB: "2",
- *     testC: "03,04,05"
- *   }
- *
- *   let output = {
- *     // Takes `test1` from input and puts it on the output as `testA`
- *     test1: "testA",
- *     // Takes `testB` from input and formats its value on the output as `testB`
- *     testB: value => parseInt(value, 10),
- *     // Takes `testC` from input and formats its value on the output as `testC`, `testD` and `testE`
- *     testC: value => {
- *       let [ testC, testD, testE ] = value.split(",").map(val => parseInt(val, 10));
- *       return {
- *         testC,
- *         testD,
- *         testE
- *       }
- *     }
- *   }
- *
- *   transformObject(input, output)
- *
- *   // Outputs:
- *   // {
- *   //   testA: 1,
- *   //   testB: 2,
- *   //   testC: 3,
- *   //   testD: 4,
- *   //   testE: 5
- *   // }
- * ```
+ * value.
  *
  * @param {Object} input
- * @param {...String|Object} props - Either a string take a single property or an object that maps a property on the input to a new property on the output
+ * @param {...String|Object|Function|TransformMap} props
  * @return {Object}
  */
 
@@ -3224,8 +3189,11 @@ function transform(input) {
   return output;
 }
 /* harmony default export */ var lib_transform = (transform);
+/**
+ * @typedef {Object} TransformMap
+ */
 // EXTERNAL MODULE: ./node_modules/lodash/get.js
-var get = __webpack_require__(5);
+var get = __webpack_require__(6);
 var get_default = /*#__PURE__*/__webpack_require__.n(get);
 
 // EXTERNAL MODULE: ./node_modules/lodash/escapeRegExp.js
@@ -3237,7 +3205,7 @@ var isBoolean = __webpack_require__(23);
 var isBoolean_default = /*#__PURE__*/__webpack_require__.n(isBoolean);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isNumber.js
-var isNumber = __webpack_require__(10);
+var isNumber = __webpack_require__(11);
 var isNumber_default = /*#__PURE__*/__webpack_require__.n(isNumber);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isInteger.js
@@ -3257,7 +3225,7 @@ var isSet = __webpack_require__(35);
 var isSet_default = /*#__PURE__*/__webpack_require__.n(isSet);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isObject.js
-var isObject = __webpack_require__(7);
+var isObject = __webpack_require__(8);
 var isObject_default = /*#__PURE__*/__webpack_require__.n(isObject);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isObjectLike.js
@@ -3499,7 +3467,7 @@ var CHECK_TYPE = {
   falsy: isFalsy
 };
 /**
- * The validation rules that can be applied.
+ * The individual validation rules that can be uses.
  */
 
 var validationRules = {
@@ -3713,7 +3681,7 @@ var validationRules = {
    * Check if input starts with a value.
    *
    * @param {String} input
-   * @param {String|RegExp} value
+   * @param {Number|String} value
    * @return {Boolean}
    */
   startsWith: function startsWith(input, value) {
@@ -3723,10 +3691,10 @@ var validationRules = {
   },
 
   /**
-   * Check if input ends with a value (number, string or RegExp).
+   * Check if input ends with a value.
    *
    * @param {String} input
-   * @param {Number|String|RegExp} value
+   * @param {Number|String} value
    * @return {Boolean}
    */
   endsWith: function endsWith(input, value) {
@@ -3736,14 +3704,36 @@ var validationRules = {
   },
 
   /**
-   * Check if input contains value (number, string or RegExp).
+   * Check if input contains value.
    *
    * @param {String|Array} input
-   * @param {Number|String} value
+   * @param {any} value
    * @return {Boolean}
    */
   contains: function contains(input, value) {
     return input.indexOf(value) > -1;
+  },
+
+  /**
+   * Check if input includes any specified values.
+   *
+   * @param {any} input
+   * @param {any} values
+   * @return {Boolean}
+   */
+  includesAny: function includesAny(input, values) {
+    return anyInArray.apply(void 0, [castArray_default()(input)].concat(validate_toConsumableArray(castArray_default()(values))));
+  },
+
+  /**
+   * Check if input includes all specified values.
+   *
+   * @param {any} input
+   * @param {any} values
+   * @return {Boolean}
+   */
+  includesAll: function includesAll(input, values) {
+    return allInArray.apply(void 0, [castArray_default()(input)].concat(validate_toConsumableArray(castArray_default()(values))));
   },
 
   /**
@@ -4106,8 +4096,12 @@ function validate(input, rules, options) {
  * @prop {Boolean} skipMissingProps - Pass properties on the input object if they don't exist/are undefined
  */
 // CONCATENATED MODULE: ./index.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transform", function() { return index_transform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validate", function() { return index_validate; });
 
 
+var index_transform = lib_transform;
+var index_validate = lib_validate;
 /* harmony default export */ var index_0 = __webpack_exports__["default"] = ({
   transform: lib_transform,
   validate: lib_validate

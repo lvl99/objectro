@@ -1,7 +1,10 @@
-import transform from "./lib/transform";
-import validate from "./lib/validate";
+import transformObject from "./lib/transform";
+import validateObject from "./lib/validate";
+
+export const transform = transformObject;
+export const validate = validateObject;
 
 export default {
-  transform,
-  validate
+  transform: transformObject,
+  validate: validateObject
 };

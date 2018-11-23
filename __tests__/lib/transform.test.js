@@ -1,4 +1,4 @@
-import transform from "./transform";
+import transform from "../../lib/transform";
 
 let testItem = {
   name: "Matt Scheurich",

@@ -1,4 +1,4 @@
-import * as util from "./util";
+import * as util from "../../lib/util";
 
 describe("util#has", () => {
   const testFn = function() {

@@ -11,15 +11,17 @@ Transform and validate objects.
 ## How?
 
 ```javascript
+  const exampleObject = {
+    example1: "This is a simple example",
+    example2: "Another simple example",
+    example3: "Another simple example to show arrays",
+    emaxpel4: "Pluck properties from the object and rename them",
+    example5: "DO SOME EXTRA FORMATTING AND RETURN AN OBJECT TO MERGE",
+    example6: "Ignore this property"
+  };
+
   objectro.transform(
-    {
-      example1: "This is a simple example",
-      example2: "Another simple example",
-      example3: "Another simple example to show arrays",
-      emaxpel4: "Pluck properties from the object and rename them",
-      example5: "DO SOME EXTRA FORMATTING AND RETURN AN OBJECT TO MERGE",
-      example6: "Ignore this property"
-    },
+    exampleObject,
     // Pluck specific properties from an object to output
     "example1",
     ["example2", "example3"],
@@ -51,8 +53,8 @@ Transform and validate objects.
   objectro.validate(
     {
       name: "Objectro",
-      version: "0.1.3",
-      lastUpdated: "2018-11-14",
+      version: "0.1.4",
+      lastUpdated: "2018-11-23",
       keywords: ["transform", "validate", "object", "javascript"],
       randomNumber: 123,
       nestedObject: {
@@ -111,7 +113,7 @@ Read more in the [docs](https://lvl99.github.io/objectro/).
 ### Browser
 
 ```html
-  <script src="//unpkg.com/objectro@0.1.0/dist/objectro.min.js"></script>
+  <script src="//unpkg.com/objectro@0.1.4/dist/objectro.min.js"></script>
   <script>
     // window.objectro should then be available
     console.log(objectro)

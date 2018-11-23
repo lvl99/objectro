@@ -3,6 +3,10 @@
 .eslintrc.json
 .lintignore
 jest.config.json
+__tests__
+*.test.js
+__benches__
+*.bench.js
 webpack.config.js
 docs
 _config.yml

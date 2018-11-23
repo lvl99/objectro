@@ -1,5 +1,5 @@
-import { validate } from "./validate";
-import { isTruthy, isFalsy } from "./util";
+import { validate } from "../../lib/validate";
+import { isTruthy, isFalsy } from "../../lib/util";
 
 const NOOP = () => {};
 const ArrayLike = function() {
@@ -377,6 +377,66 @@ describe("validate#type", () => {
   );
 });
 
+describe("validate#includesAny", () => {
+  it("should validate if input includes any values (using string value)", () => {
+    expect(
+      validate(testItem.languages, {
+        includesAny: "en"
+      })
+    ).toBe(true);
+
+    expect(
+      validate(testItem.languages, {
+        includesAny: "de"
+      })
+    ).toBe(false);
+  });
+
+  it("should validate if input includes any values (using array value)", () => {
+    expect(
+      validate(testItem.languages, {
+        includesAny: ["de", "fr"]
+      })
+    ).toBe(true);
+
+    expect(
+      validate(testItem.languages, {
+        includesAny: ["de", "ja"]
+      })
+    ).toBe(false);
+  });
+});
+
+describe("validate#includesAll", () => {
+  it("should validate if input includes all values (using string value)", () => {
+    expect(
+      validate(testItem.languages, {
+        includesAll: "en"
+      })
+    ).toBe(true);
+
+    expect(
+      validate(testItem.languages, {
+        includesAll: "de"
+      })
+    ).toBe(false);
+  });
+
+  it("should validate if input includes all values (using array value)", () => {
+    expect(
+      validate(testItem.languages, {
+        includesAll: ["fr", "en"]
+      })
+    ).toBe(true);
+
+    expect(
+      validate(testItem.languages, {
+        includesAll: ["de", "ja"]
+      })
+    ).toBe(false);
+  });
+});
+
 describe("validate#has", () => {
   it("should validate if object has a single property", () => {
     expect(
@@ -384,6 +444,12 @@ describe("validate#has", () => {
         has: "name"
       })
     ).toBe(true);
+
+    expect(
+      validate(testItem, {
+        has: "doesNotExist"
+      })
+    ).toBe(false);
   });
 
   it("should validate if object has a single nested property", () => {
@@ -392,6 +458,12 @@ describe("validate#has", () => {
         has: "skills.programming"
       })
     ).toBe(true);
+
+    expect(
+      validate(testItem, {
+        has: "doesNotExist.anotherDoesNotExist"
+      })
+    ).toBe(false);
   });
 
   it("should validate if object has any of the specified properties", () => {
