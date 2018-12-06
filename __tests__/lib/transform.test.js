@@ -289,8 +289,6 @@ describe("transform", () => {
       newName2: "newName3"
     });
 
-    console.log(testOutput);
-
     expect(testOutput).toMatchObject({
       name: testItem.name,
       newName: testItem.name,

@@ -1347,7 +1347,12 @@ var _require = __webpack_require__(35),
 var _require2 = __webpack_require__(83),
     validate = _require2.validate;
 
+var objectro = {
+  transform: transform,
+  validate: validate
+};
 module.exports = {
+  default: objectro,
   transform: transform,
   validate: validate
 };
