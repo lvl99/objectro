@@ -1,10 +1,7 @@
-import transformObject from "./lib/transform";
-import validateObject from "./lib/validate";
+const { transform } = require("./lib/transform");
+const { validate } = require("./lib/validate");
 
-export const transform = transformObject;
-export const validate = validateObject;
-
-export default {
-  transform: transformObject,
-  validate: validateObject
+module.exports = {
+  transform,
+  validate
 };

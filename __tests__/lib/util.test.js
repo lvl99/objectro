@@ -1,4 +1,4 @@
-import * as util from "../../lib/util";
+const util = require("../../lib/util");
 
 describe("util#has", () => {
   const testFn = function() {

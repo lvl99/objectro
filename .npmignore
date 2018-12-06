@@ -2,11 +2,12 @@
 .editorconfig
 .eslintrc.json
 .lintignore
-jest.config.json
 __tests__
 *.test.js
 __benches__
 *.bench.js
+jest.config.js
+barbell.config.js
 webpack.config.js
 docs
 _config.yml

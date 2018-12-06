@@ -1,5 +1,5 @@
-import { validate } from "../../lib/validate";
-import { isTruthy, isFalsy } from "../../lib/util";
+const { validate } = require("../../lib/validate");
+const { isTruthy, isFalsy } = require("../../lib/util");
 
 const NOOP = () => {};
 const ArrayLike = function() {

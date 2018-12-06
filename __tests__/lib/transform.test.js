@@ -1,4 +1,4 @@
-import transform from "../../lib/transform";
+const { transform } = require("../../lib/transform");
 
 let testItem = {
   name: "Matt Scheurich",
@@ -145,21 +145,23 @@ describe("transform", () => {
     });
   });
 
-  it("should not allow modifying the input object in format functions", () => {
+  it("should not allow modifying the input object in format functions; throws error when in strict mode", () => {
     transform(testItem, {
-      name() {
+      name(value, propName, input, output) {
+        "use strict";
+        expect(this).toBe(input);
         expect(() => {
-          // `this` will represent the input object, however it has been frozen
-          // using Object.freeze() and should throw errors if we try to assign
-          // new values
+          // input object is frozen using Object.freeze() and
+          // should throw errors if we try to assign new values
           this.name = "fail";
         }).toThrow();
       },
-      age() {
+      age(value, propName, input, output) {
+        "use strict";
+        expect(this).toBe(input);
         expect(() => {
-          // `this` will represent the input object, however it has been frozen
-          // using Object.freeze() and should throw errors if we try to assign
-          // new values
+          // input object is frozen using Object.freeze() and
+          // should throw errors if we try to remove values
           delete this.name;
         }).toThrow();
       }
@@ -207,6 +209,93 @@ describe("transform", () => {
       testC: 3,
       testD: 4,
       testE: 5
+    });
+  });
+
+  it("should sequentially transform object props #1", () => {
+    const transformed = [];
+    const incrementTransformed = (value, propName) => {
+      transformed.push({ propName, value });
+    };
+
+    transform(testItem, {
+      name: incrementTransformed,
+      age: incrementTransformed,
+      dob: incrementTransformed,
+      country: incrementTransformed
+    });
+
+    expect(transformed).toHaveLength(4);
+    expect(transformed[0].propName).toBe("name");
+    expect(transformed[1].propName).toBe("age");
+    expect(transformed[2].propName).toBe("dob");
+    expect(transformed[3].propName).toBe("country");
+  });
+
+  it("should sequentially transform object props #2", () => {
+    const transformed = [];
+    const incrementTransformedFn = newPropName => (
+      value,
+      propName,
+      input,
+      output
+    ) => {
+      transformed.push({
+        propName,
+        value,
+        newPropName,
+        output: { ...output }
+      });
+
+      return {
+        [newPropName]: value
+      };
+    };
+
+    const testOutput = transform(testItem, {
+      name: incrementTransformedFn("newName"),
+      age: incrementTransformedFn("newAge"),
+      dob: incrementTransformedFn("newDob"),
+      country: incrementTransformedFn("newCountry")
+    });
+
+    expect(Object.keys(testOutput)).toHaveLength(4);
+    expect(testOutput).toMatchObject({
+      newName: testItem.name,
+      newAge: testItem.age,
+      newDob: testItem.dob,
+      newCountry: testItem.country
+    });
+
+    expect(transformed).toHaveLength(4);
+    expect(transformed[0].propName).toBe("name");
+    expect(transformed[0].newPropName).toBe("newName");
+    expect(Object.keys(transformed[0].output)).toHaveLength(0);
+    expect(transformed[1].propName).toBe("age");
+    expect(transformed[1].newPropName).toBe("newAge");
+    expect(Object.keys(transformed[1].output)).toHaveLength(1);
+    expect(transformed[2].propName).toBe("dob");
+    expect(transformed[2].newPropName).toBe("newDob");
+    expect(Object.keys(transformed[2].output)).toHaveLength(2);
+    expect(transformed[3].propName).toBe("country");
+    expect(transformed[3].newPropName).toBe("newCountry");
+    expect(Object.keys(transformed[3].output)).toHaveLength(3);
+  });
+
+  it("should sequentially transform object props #3", () => {
+    const testOutput = transform(testItem, "name", {
+      name: "newName",
+      newName: "newName2",
+      newName2: "newName3"
+    });
+
+    console.log(testOutput);
+
+    expect(testOutput).toMatchObject({
+      name: testItem.name,
+      newName: testItem.name,
+      newName2: testItem.name,
+      newName3: testItem.name
     });
   });
 });
