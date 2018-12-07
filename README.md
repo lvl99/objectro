@@ -53,8 +53,8 @@ Transform and validate objects.
   objectro.validate(
     {
       name: "Objectro",
-      version: "0.1.5",
-      lastUpdated: "2018-12-06",
+      version: "0.1.6",
+      lastUpdated: "2018-12-07",
       keywords: ["transform", "validate", "object", "javascript"],
       randomNumber: 123,
       nestedObject: {
@@ -113,7 +113,7 @@ Read more in the [docs](https://lvl99.github.io/objectro/).
 ### Browser
 
 ```html
-  <script src="//unpkg.com/objectro@0.1.5/dist/objectro.min.js"></script>
+  <script src="//unpkg.com/objectro@0.1.6/dist/objectro.min.js"></script>
   <script>
     // window.objectro should then be available
     console.log(objectro)

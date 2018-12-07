@@ -1,6 +1,6 @@
 {
   "name": "objectro",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Transform and validate objects",
   "author": "Matt Scheurich <matt@lvl99.com>",
   "license": "MIT",
