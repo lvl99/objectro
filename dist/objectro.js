@@ -1070,6 +1070,17 @@ function isFalsy(input) {
   return !input;
 }
 /**
+ * Check if input is empty value.
+ *
+ * @param {any} input
+ * @return {Boolean}
+ */
+
+
+function isEmpty(input) {
+  return input === undefined || input === null || input === "" || input instanceof Array && input.length === 0;
+}
+/**
  * Check if input is a float number.
  *
  * @param {Number} input
@@ -1142,6 +1153,7 @@ var utils = {
   isTruthy: isTruthy,
   isFalsy: isFalsy,
   isFloat: isFloat,
+  isEmpty: isEmpty,
   anyInArray: anyInArray,
   allInArray: allInArray
 };
@@ -1390,10 +1402,11 @@ var isNil = __webpack_require__(27);
 var castArray = __webpack_require__(28);
 
 var _require = __webpack_require__(29),
-    has = _require.has;
+    has = _require.has,
+    isEmpty = _require.isEmpty;
 
 var useInputOrOutputValue = function useInputOrOutputValue(propName, input, output) {
-  return has(input, propName) && !!get(input, propName) ? get(input, propName) : get(output, propName);
+  return has(input, propName) && !isEmpty(get(input, propName)) ? get(input, propName) : get(output, propName);
 };
 /**
  * Take an object and output another object with different property
