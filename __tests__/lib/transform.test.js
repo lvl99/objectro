@@ -296,4 +296,35 @@ describe("transform", () => {
       newName3: testItem.name
     });
   });
+
+  it("should sequentially transform object props #4", () => {
+    const testOutput = transform(
+      {
+        oldName: "",
+        changeName1: "",
+        changeName2: "changeName2",
+        changeName3: ""
+      },
+      {
+        oldName: "changeName",
+        changeName1: "changeName",
+        changeName2: "changeName",
+        changeName3: "changeName"
+      }
+    );
+
+    expect(testOutput).toMatchObject({
+      changeName: "changeName2"
+    });
+  });
+
+  it("should ignore undefined values", () => {
+    const testOutput = transform(testItem, {
+      name: "name",
+      undefinedProp: "nothing"
+    });
+
+    expect(testOutput).toHaveProperty("name", testItem.name);
+    expect(testOutput).not.toHaveProperty("nothing");
+  });
 });
