@@ -1393,7 +1393,7 @@ var _require = __webpack_require__(29),
     has = _require.has;
 
 var useInputOrOutputValue = function useInputOrOutputValue(propName, input, output) {
-  return has(input, propName) ? get(input, propName) : get(output, propName);
+  return has(input, propName) && !!get(input, propName) ? get(input, propName) : get(output, propName);
 };
 /**
  * Take an object and output another object with different property
@@ -1432,7 +1432,14 @@ function transform(input) {
           var inputValue = useInputOrOutputValue(propName, input, output); // New name for prop on output object or a function to format the input
           // object's value
 
-          var outputProp = get(processProps, propName); // Format value using function
+          var outputProp = get(processProps, propName); // console.log("objectro.transform output snapshot", {
+          //   input,
+          //   output: { ...output },
+          //   propName,
+          //   inputValue,
+          //   outputProp
+          // });
+          // Format value using function
 
           if (isFunction(outputProp)) {
             // Use the input as the context and pass the value, propName
