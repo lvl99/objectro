@@ -1402,8 +1402,11 @@ var isNil = __webpack_require__(27);
 var castArray = __webpack_require__(28);
 
 var _require = __webpack_require__(29),
-    has = _require.has,
-    isEmpty = _require.isEmpty;
+    has = _require.has;
+
+var isEmpty = function isEmpty(input) {
+  return input === undefined || input === null;
+};
 
 var useInputOrOutputValue = function useInputOrOutputValue(propName, input, output) {
   return has(input, propName) && !isEmpty(get(input, propName)) ? get(input, propName) : get(output, propName);
@@ -1437,19 +1440,23 @@ function transform(input) {
   props.forEach(function (processProps) {
     // A string represents a name from the input to map to the output
     if (isString(processProps)) {
-      set(output, processProps, useInputOrOutputValue(processProps, input, output));
+      var useValue = useInputOrOutputValue(processProps, input, output);
+
+      if (useValue !== undefined) {
+        set(output, processProps, useValue);
+      }
     } // An object represents a map from the input structure to a new structure
     else if (isPlainObject(processProps)) {
         Object.keys(processProps).forEach(function (propName) {
           // Original value
-          var inputValue = useInputOrOutputValue(propName, input, output); // New name for prop on output object or a function to format the input
+          var useValue = useInputOrOutputValue(propName, input, output); // New name for prop on output object or a function to format the input
           // object's value
 
           var outputProp = get(processProps, propName); // console.log("objectro.transform output snapshot", {
           //   input,
           //   output: { ...output },
           //   propName,
-          //   inputValue,
+          //   useValue,
           //   outputProp
           // });
           // Format value using function
@@ -1461,7 +1468,7 @@ function transform(input) {
             // into the output object.
             // We also prevent the function from mutating the input object
             // by making a copy of the input object and freezing it.
-            var outputValue = outputProp.call(immutableInput, inputValue, propName, immutableInput, output); // If a function doesn't return anything, then we assume the function
+            var outputValue = outputProp.call(immutableInput, useValue, propName, immutableInput, output); // If a function doesn't return anything, then we assume the function
             // has done the necessary manipulations to the output object itself
 
             if (outputValue !== undefined) {
@@ -1472,11 +1479,11 @@ function transform(input) {
               }
             }
           } // Nested object map on the same prop name
-          else if (isPlainObject(inputValue) && (isPlainObject(outputProp) || isArray(outputProp))) {
-              set(output, propName, transform.apply(void 0, [inputValue].concat(_toConsumableArray(castArray(outputProp)))));
+          else if (isPlainObject(useValue) && (isPlainObject(outputProp) || isArray(outputProp))) {
+              set(output, propName, transform.apply(void 0, [useValue].concat(_toConsumableArray(castArray(outputProp)))));
             } // Map input value to new prop in output
-            else if (isString(outputProp)) {
-                set(output, outputProp, inputValue);
+            else if (isString(outputProp) && useValue !== undefined) {
+                set(output, outputProp, useValue);
               }
         });
       }
@@ -1570,7 +1577,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;
@@ -3362,10 +3369,10 @@ var validationRules = {
    * @param {String|RegExp} re
    * @return {Boolean}
    */
-  re: function re(input, _re2) {
-    var _re = _re2 instanceof RegExp ? _re2 : new RegExp(_re2);
-
-    return _re.test(input);
+  re: function re(input, _re, _ref) {
+    var _ref$caseSensitive = _ref.caseSensitive,
+        caseSensitive = _ref$caseSensitive === void 0 ? false : _ref$caseSensitive;
+    return (_re instanceof RegExp ? _re : new RegExp(_re, !caseSensitive ? "i" : undefined)).test(input);
   },
 
   /**
@@ -3375,10 +3382,10 @@ var validationRules = {
    * @param {Number|String} value
    * @return {Boolean}
    */
-  startsWith: function startsWith(input, value) {
-    var _reStartsWith = new RegExp("^".concat(escapeRegExp(value)));
-
-    return _reStartsWith.test(input + "");
+  startsWith: function startsWith(input, value, _ref2) {
+    var _ref2$caseSensitive = _ref2.caseSensitive,
+        caseSensitive = _ref2$caseSensitive === void 0 ? false : _ref2$caseSensitive;
+    return new RegExp("^".concat(escapeRegExp(value)), !caseSensitive ? "i" : undefined).test(input + "");
   },
 
   /**
@@ -3386,12 +3393,13 @@ var validationRules = {
    *
    * @param {String} input
    * @param {Number|String} value
+   * @param {Object} options
    * @return {Boolean}
    */
-  endsWith: function endsWith(input, value) {
-    var _reStartsWith = new RegExp("".concat(escapeRegExp(value), "$"));
-
-    return _reStartsWith.test(input + "");
+  endsWith: function endsWith(input, value, _ref3) {
+    var _ref3$caseSensitive = _ref3.caseSensitive,
+        caseSensitive = _ref3$caseSensitive === void 0 ? false : _ref3$caseSensitive;
+    return new RegExp("".concat(escapeRegExp(value), "$"), !caseSensitive ? "i" : undefined).test(input + "");
   },
 
   /**
@@ -3399,10 +3407,13 @@ var validationRules = {
    *
    * @param {String|Array} input
    * @param {any} value
+   * @param {Object} options
    * @return {Boolean}
    */
-  contains: function contains(input, value) {
-    return input.indexOf(value) > -1;
+  contains: function contains(input, value, _ref4) {
+    var _ref4$caseSensitive = _ref4.caseSensitive,
+        caseSensitive = _ref4$caseSensitive === void 0 ? false : _ref4$caseSensitive;
+    return isArray(input) ? input.indexOf(value) > -1 : caseSensitive ? input.indexOf(value) > -1 : new RegExp("".concat(escapeRegExp(value)), "i").test(input);
   },
 
   /**
@@ -3608,12 +3619,12 @@ function validate(input, rules, options) {
   var countMatchedRules = 0;
   var isValid = false;
 
-  var matchedRule = function matchedRule(_ref) {
-    var ruleName = _ref.ruleName,
-        ruleValue = _ref.ruleValue,
-        input = _ref.input,
-        options = _ref.options,
-        isValid = _ref.isValid;
+  var matchedRule = function matchedRule(_ref5) {
+    var ruleName = _ref5.ruleName,
+        ruleValue = _ref5.ruleValue,
+        input = _ref5.input,
+        options = _ref5.options,
+        isValid = _ref5.isValid;
 
     if (isValid) {
       countMatchedRules++;
@@ -3792,6 +3803,7 @@ module.exports = {
  * @prop {Boolean} negateMatch - Return the opposite of the match's result
  * @prop {Boolean} matchAll - Return true only if all rules within the {ValidationRules} object match
  * @prop {Boolean} skipMissingProps - Pass properties on the input object if they don't exist/are undefined
+ * @prop {Boolean} caseSensitive - Enable or disable case sensitive mode
  */
 
 /***/ }),

@@ -283,9 +283,9 @@ There are three types of rules:
 | `lt` | Expression | Less than |
 | `lte` | Expression | Less than or equals |
 | `re` | Expression | RegExp test |
-| `startsWith` | Expression | Check if input starts with a value |
-| `endsWith` | Expression | Check if input ends with a value |
-| `contains` | Expression | Check if input (string or array) contains value |
+| `startsWith` | Expression | Check if input starts with a value (can be affected by `caseSensitive`) |
+| `endsWith` | Expression | Check if input ends with a value (can be affected by `caseSensitive`) |
+| `contains` | Expression | Check if input (string or array) contains value (can be affected by `caseSensitive` if input is string) |
 | `includesAny` | Expression | Check if input includes any values |
 | `includesAll` | Expression | Check if input includes all values |
 
@@ -298,4 +298,5 @@ There are more [specialised rules](https://github.com/lvl99/objectro/blob/8a63bb
 | `matchAll` | boolean | Return true only if all rules within the [ValidationRules](#validation-rules) object match |
 | `negateMatch` | boolean | Return the opposite of the match's result |
 | `skipMissingProps` | boolean | Pass any properties on the input object if they don't exist or are undefined |
+| `caseSensitive` | boolean | Enable or disable case sensitivity mode |
 | `data` | object | Supply extra data to validate against. If the input object does not contain the property within the rules, `objectro.validate` will then check this object. |

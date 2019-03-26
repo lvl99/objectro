@@ -53,8 +53,8 @@ Transform and validate objects.
   objectro.validate(
     {
       name: "Objectro",
-      version: "0.1.6",
-      lastUpdated: "2018-12-07",
+      version: "0.1.7",
+      lastUpdated: "2019-03-26",
       keywords: ["transform", "validate", "object", "javascript"],
       randomNumber: 123,
       nestedObject: {
@@ -113,7 +113,7 @@ Read more in the [docs](https://lvl99.github.io/objectro/).
 ### Browser
 
 ```html
-  <script src="//unpkg.com/objectro@0.1.6/dist/objectro.min.js"></script>
+  <script src="//unpkg.com/objectro@0.1.7/dist/objectro.min.js"></script>
   <script>
     // window.objectro should then be available
     console.log(objectro)
@@ -144,13 +144,13 @@ Then in your source code:
 To download external dependencies:
 
 ```bash
-  yarn
+  npm i
 ```
 
 To run tests (using Jest):
 
 ```bash
-  yarn test
+  npm test
 ```
 
 ## Contribute

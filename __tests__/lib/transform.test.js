@@ -298,23 +298,23 @@ describe("transform", () => {
   });
 
   it("should sequentially transform object props #4", () => {
-    const testOutput = transform(
-      {
-        oldName: "",
-        changeName1: "",
-        changeName2: "changeName2",
-        changeName3: ""
-      },
-      {
-        oldName: "changeName",
-        changeName1: "changeName",
-        changeName2: "changeName",
-        changeName3: "changeName"
-      }
-    );
+    const testObject = {
+      oldName: "oldName",
+      changeName1: "changeName1",
+      changeName2: "changeName2",
+      changeName3: "changeName3"
+    };
+
+    const testOutput = transform(testObject, {
+      oldName: "changedName1",
+      changeName1: "changedName1",
+      changeName2: "changedName2",
+      changeName3: "changedName2"
+    });
 
     expect(testOutput).toMatchObject({
-      changeName: "changeName2"
+      changedName1: "changeName1",
+      changedName2: "changeName3"
     });
   });
 

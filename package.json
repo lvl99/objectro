@@ -7,9 +7,10 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint . --ignore-path .lintignore",
-    "lint:fix": "eslint . --ignore-path .lintignore",
+    "lint:fix": "eslint . --ignore-path .lintignore --fix",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:bench": "barbell",
     "publish": "npm publish"
   },
   "keywords": [
@@ -23,8 +24,8 @@
     "validate"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/lvl99/objectro.git"
+    "type": "git",
+    "url": "https://github.com/lvl99/objectro.git"
   },
   "homepage": "https://github.com/lvl99/objectro",
   "bugs": "https://github.com/lvl99/objectro/issues",
@@ -38,18 +39,20 @@
     "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.4",
-    "barbell": "^0.1.0",
+    "barbell": "^0.1.2",
+    "chalk": "^2.4.2",
     "email-validator": "^2.0.4",
     "eslint": "^5.8.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^1.1.2",
-    "jest": "^23.6.0",
-    "jest-cli": "^23.6.0",
+    "jest": "^24.5.0",
+    "jest-cli": "^24.5.0",
     "joi": "^14.3.0",
     "lint-staged": "^8.0.4",
+    "object-mapper": "^5.0.0",
     "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "uglifyjs-webpack-plugin": "^2.0.1",
@@ -60,13 +63,13 @@
     "hooks": {
       "post-commit": "git update-index --again",
       "pre-commit": "lint-staged",
-      "post-merge": "yarn",
-      "pre-push": "yarn test"
+      "post-merge": "npm i",
+      "pre-push": "npm test"
     }
   },
   "lint-staged": {
     "*.js": [
-      "yarn lint",
+      "npm run lint:fix",
       "git add"
     ]
   }
