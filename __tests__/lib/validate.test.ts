@@ -1,4 +1,4 @@
-import { POJO, ValidationOptions } from "../..";
+import { POJO, ValidationOptions } from "../../lib/types";
 import validate from "../../lib/validate";
 import { isFalsy } from "../../lib/util";
 

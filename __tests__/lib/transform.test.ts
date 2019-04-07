@@ -1,4 +1,4 @@
-import { POJO, TransformFn } from "../..";
+import { POJO, TransformFn } from "../../lib/types";
 import transform from "../../lib/transform";
 
 let testItem: POJO = {

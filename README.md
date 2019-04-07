@@ -1,6 +1,6 @@
 # Objectro
 
-Transform and validate objects.
+🔀Transform and ☑️validate 🎁objects.
 
 ## Why?
 
@@ -31,6 +31,8 @@ objectro.transform(
     // You can also pass a format function to transform that value
     // further, such as sanitising, normalising or otherwise processing
     // the value
+    // If the format function returns an object, then that object will
+    // be merged with the output object
     example5: (value, propName) => ({
       [propName]: value.toLowerCase(),
       example6: "This is new!"
@@ -53,8 +55,8 @@ objectro.transform(
 objectro.validate(
   {
     name: "Objectro",
-    version: "0.1.7",
-    lastUpdated: "2019-03-26",
+    version: "1.0.0",
+    lastUpdated: "2019-04-07",
     keywords: ["transform", "validate", "object", "javascript"],
     randomNumber: 123,
     nestedObject: {
@@ -89,7 +91,7 @@ objectro.validate(
           gt: 100
         },
         // You can also use custom functions to validate properties
-        lastUpdated: value => new Date(value).getFullYear() === 2018
+        lastUpdated: value => new Date(value).getUTCFullYear() === 2019
       },
       // Negate the result of the following rules
       not: {
@@ -113,7 +115,7 @@ Read more in the [docs](https://lvl99.github.io/objectro/).
 ### Browser
 
 ```html
-<script src="//unpkg.com/objectro@0.1.7/dist/objectro.min.js"></script>
+<script src="//unpkg.com/objectro@1.0.0/dist/objectro.umd.js"></script>
 <script>
   // window.objectro should then be available
   console.log(objectro);
@@ -136,6 +138,10 @@ const { transform, validate } = require("objectro");
 
 // ES6
 import objectro from "objectro";
+import { transform, validate } from "objectro";
+
+// TypeScript
+import { TransformFn } from "objectro/lib/types"; // if you ever need access to specific objectro type definitions
 import { transform, validate } from "objectro";
 ```
 

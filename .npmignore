@@ -14,13 +14,8 @@ logs
 __benches__
 __tests__
 *.test.ts
-*.bench.ts
+*.test.js
+*.bench.js
 
 # Config
-.lintignore
 _config.yml
-barbell.config.js
-jest.config.js
-rollup.config.js
-tsconfig.json
-index.ts

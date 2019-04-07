@@ -29,7 +29,7 @@ import {
   ValidationRuleRangeOptions,
   ValidationRuleTypeFns,
   ValidationMatchedRule
-} from "..";
+} from "../lib/types";
 import {
   has,
   isTruthy,

@@ -4,7 +4,7 @@ import isNaN from "lodash/isNaN";
 import isNumber from "lodash/isNumber";
 import isInteger from "lodash/isInteger";
 import isFunction from "lodash/isFunction";
-import { ValidateValueFn } from "..";
+import { ValidateValueFn } from "../lib/types";
 
 /**
  * Check if input has a property by name, and can check if has an expected value.

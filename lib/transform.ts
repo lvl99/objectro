@@ -5,7 +5,7 @@ import isArray from "lodash/isArray";
 import isPlainObject from "lodash/isPlainObject";
 import isFunction from "lodash/isFunction";
 import castArray from "lodash/castArray";
-import { POJO, TransformFn } from "..";
+import { POJO, TransformFn } from "../lib/types";
 import { has, isEmpty } from "./util";
 
 const useInputOrOutputValue = (
