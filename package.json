@@ -55,7 +55,6 @@
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
     "joi": "^14.3.0",
-    "lint-staged": "^8.0.4",
     "object-mapper": "^5.0.0",
     "prop-types": "^15.6.2",
     "rename-extension": "^3.0.0",
@@ -70,12 +69,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "lint-staged"
+      "pre-push": "npm run lint"
     }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint"
-    ]
   }
 }
