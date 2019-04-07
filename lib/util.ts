@@ -1,10 +1,10 @@
-const get = require("lodash/get");
-const set = require("lodash/set");
-const hasIn = require("lodash/hasIn");
-const isNaN = require("lodash/isNaN");
-const isNumber = require("lodash/isNumber");
-const isInteger = require("lodash/isInteger");
-const isFunction = require("lodash/isFunction");
+import get from "lodash/get";
+import hasIn from "lodash/hasIn";
+import isNaN from "lodash/isNaN";
+import isNumber from "lodash/isNumber";
+import isInteger from "lodash/isInteger";
+import isFunction from "lodash/isFunction";
+import { ValidateValueFn } from "..";
 
 /**
  * Check if input has a property by name, and can check if has an expected value.
@@ -13,10 +13,14 @@ const isFunction = require("lodash/isFunction");
  * property value. Return a boolean
  *
  * @param {Object} input
- * @param {String} propName
+ * @param {String|Array<String|Number>} propName
  * @param {any|Function} expectedValue
  */
-function has(input, propName, expectedValue) {
+export function has(
+  input: any,
+  propName: string | (string | number)[],
+  expectedValue?: ValidateValueFn | any
+): boolean {
   return expectedValue === undefined
     ? hasIn(input, propName)
     : hasIn(input, propName) &&
@@ -31,7 +35,7 @@ function has(input, propName, expectedValue) {
  * @param {any} input
  * @return {Boolean}
  */
-function isTruthy(input) {
+export function isTruthy(input: any): boolean {
   return !!input;
 }
 
@@ -41,7 +45,7 @@ function isTruthy(input) {
  * @param {any} input
  * @return {Boolean}
  */
-function isFalsy(input) {
+export function isFalsy(input: any): boolean {
   return !input;
 }
 
@@ -51,7 +55,7 @@ function isFalsy(input) {
  * @param {any} input
  * @return {Boolean}
  */
-function isEmpty(input) {
+export function isEmpty(input: any): boolean {
   return (
     input === undefined ||
     input === null ||
@@ -66,7 +70,7 @@ function isEmpty(input) {
  * @param {Number} input
  * @return {Boolean}
  */
-function isFloat(input) {
+export function isFloat(input: any): boolean {
   return (
     !isNaN(input) && isNumber(input) && !isInteger(input) && input !== Infinity
   );
@@ -79,7 +83,7 @@ function isFloat(input) {
  * @param {...any} values
  * @return {Boolean}
  */
-function anyInArray(input, ...values) {
+export function anyInArray(input: any, ...values: any[]): boolean {
   let output = false;
   let totalValues = values.length;
   if (totalValues) {
@@ -102,7 +106,7 @@ function anyInArray(input, ...values) {
  * @param {...any} values
  * @return {Boolean}
  */
-function allInArray(input, ...values) {
+export function allInArray(input: any, ...values: any[]): boolean {
   let output = false;
   let totalValues = values.length;
   let countMatched = 0;
@@ -122,20 +126,3 @@ function allInArray(input, ...values) {
 
   return output;
 }
-
-const utils = {
-  get,
-  set,
-  has,
-  isTruthy,
-  isFalsy,
-  isFloat,
-  isEmpty,
-  anyInArray,
-  allInArray
-};
-
-module.exports = {
-  default: utils,
-  ...utils
-};

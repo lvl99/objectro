@@ -1,12 +1,23 @@
-const { validate } = require("../../lib/validate");
-const { isTruthy, isFalsy } = require("../../lib/util");
+import { POJO, ValidationOptions } from "../..";
+import validate from "../../lib/validate";
+import { isFalsy } from "../../lib/util";
+
+interface TypeTests {
+  [typeName: string]: {
+    [expectedResult: string]: any[];
+  };
+}
 
 const NOOP = () => {};
-const ArrayLike = function() {
-  this.length = 0;
-};
 
-let testItem = {
+class ArrayLike {
+  length: number;
+  constructor() {
+    this.length = 0;
+  }
+}
+
+let testItem: POJO = {
   name: "Matt Scheurich",
   dateOfBirth: "1983-04-17",
   age: 35,
@@ -30,7 +41,7 @@ let testItem = {
   traits: ["positive", "helpful", "happy", "encouraging", "team member"]
 };
 
-const testOptions = moreOptions => ({
+const testOptions = (moreOptions: ValidationOptions): ValidationOptions => ({
   data: {
     locale: "en-UK",
     minimumAge: 16
@@ -40,7 +51,7 @@ const testOptions = moreOptions => ({
 
 describe("validate#type", () => {
   let declaredVariableWithNoValueAssigned;
-  let typeTests = {
+  let typeTests: TypeTests = {
     bool: {
       true: [true, false, Boolean(1)],
       false: [Boolean, undefined, null, 0, "", {}, [], NOOP, NaN, Infinity]
@@ -103,7 +114,7 @@ describe("validate#type", () => {
       ]
     },
     array: {
-      true: [[], new Array()],
+      true: [[], new Array(3)],
       false: [
         Array,
         undefined,
@@ -122,7 +133,7 @@ describe("validate#type", () => {
       ]
     },
     arrayLike: {
-      true: [[], new Array(), new ArrayLike(), "", "string"],
+      true: [[], new Array(3), new ArrayLike(), "", "string"],
       false: [
         Array,
         ArrayLike,
@@ -243,7 +254,7 @@ describe("validate#type", () => {
       ]
     },
     regExp: {
-      true: [/abc/, new RegExp()],
+      true: [/abc/, new RegExp("abc")],
       false: [
         undefined,
         null,
@@ -585,7 +596,7 @@ describe("documentation examples", () => {
   });
 
   it("ValidationRules example #1: is object that does not have name and age properties", () => {
-    let validateExample = input =>
+    let validateExample = (input: any): boolean =>
       validate(input, {
         all: {
           type: "object",
@@ -605,7 +616,7 @@ describe("documentation examples", () => {
   });
 
   it("ValidationRules example #2: has language 'fr' or 'de' and not language 'en'", () => {
-    let validateExample = input =>
+    let validateExample = (input: any): boolean =>
       validate(input, {
         all: {
           any: {

@@ -1,55 +1,63 @@
-const get = require("lodash/get");
-const escapeRegExp = require("lodash/escapeRegExp");
-const castArray = require("lodash/castArray");
-const isBoolean = require("lodash/isBoolean");
-const isString = require("lodash/isString");
-const isNumber = require("lodash/isNumber");
-const isInteger = require("lodash/isInteger");
-const isArray = require("lodash/isArray");
-const isArrayLike = require("lodash/isArrayLike");
-const isMap = require("lodash/isMap");
-const isSet = require("lodash/isSet");
-const isObject = require("lodash/isObject");
-const isObjectLike = require("lodash/isObjectLike");
-const isPlainObject = require("lodash/isPlainObject");
-const isFunction = require("lodash/isFunction");
-const isRegExp = require("lodash/isRegExp");
-const isDate = require("lodash/isDate");
-const isNull = require("lodash/isNull");
-const isUndefined = require("lodash/isUndefined");
-const isNaN = require("lodash/isNaN");
-const isNil = require("lodash/isNil");
-const isError = require("lodash/isError");
-const {
+import get from "lodash/get";
+import escapeRegExp from "lodash/escapeRegExp";
+import castArray from "lodash/castArray";
+import isBoolean from "lodash/isBoolean";
+import isString from "lodash/isString";
+import isNumber from "lodash/isNumber";
+import isInteger from "lodash/isInteger";
+import isArray from "lodash/isArray";
+import isArrayLike from "lodash/isArrayLike";
+import isMap from "lodash/isMap";
+import isSet from "lodash/isSet";
+import isObject from "lodash/isObject";
+import isObjectLike from "lodash/isObjectLike";
+import isPlainObject from "lodash/isPlainObject";
+import isFunction from "lodash/isFunction";
+import isRegExp from "lodash/isRegExp";
+import isDate from "lodash/isDate";
+import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
+import isNaN from "lodash/isNaN";
+import isNil from "lodash/isNil";
+import isError from "lodash/isError";
+import {
+  POJO,
+  ValidationFn,
+  ValidationOptions,
+  ValidationRules,
+  ValidationRulesObject,
+  ValidationRuleRangeOptions,
+  ValidationRuleTypeFns,
+  ValidationMatchedRule
+} from "..";
+import {
   has,
   isTruthy,
   isFalsy,
   isFloat,
   anyInArray,
   allInArray
-} = require("./util");
+} from "./util";
 
 /**
  * Default validate options.
- *
- * @type {ValidationOptions}
  */
-const DEFAULT_OPTIONS = {
+export const DEFAULT_OPTIONS: ValidationOptions = {
   _depth: 0,
   debug: false,
   negateMatch: false,
   matchAll: false,
   skipMissingProps: false,
+  caseSensitive: false,
   data: {}
 };
 
 /**
  * Factory to create {ValidationOptions} object.
- *
- * @param {ValidationOptions} options
- * @return {ValidationOptions}
  */
-const generateOptions = options => ({
+export const generateOptions = (
+  options: ValidationOptions = {}
+): ValidationOptions => ({
   ...DEFAULT_OPTIONS,
   ...options
 });
@@ -60,16 +68,19 @@ const generateOptions = options => ({
  * @param {ValidationOptions} options
  * @return {ValidationOptions}
  */
-const generateOptionsAndIncrementDepth = options => ({
+export const generateOptionsAndIncrementDepth = (
+  options: ValidationOptions = {}
+): ValidationOptions => ({
   ...DEFAULT_OPTIONS,
   ...options,
-  _depth: parseInt(options._depth, 10) + 1
+  _depth:
+    options._depth !== undefined && options._depth >= 0 ? options._depth + 1 : 0
 });
 
 /**
  * Type checks and comparison functions.
  */
-const CHECK_TYPE = {
+export const CHECK_TYPE: ValidationRuleTypeFns = {
   bool: isBoolean,
   boolean: isBoolean,
   string: isString,
@@ -98,7 +109,7 @@ const CHECK_TYPE = {
 /**
  * The individual validation rules that can be uses.
  */
-const validationRules = {
+export const validationRules: ValidationRulesObject = {
   /**
    * Negate the result of the rules on the input.
    *
@@ -107,7 +118,11 @@ const validationRules = {
    * @param {ValidationOptions} options
    * @return {Boolean}
    */
-  not: (input, rules, options) =>
+  not: (
+    input: any,
+    rules: ValidationRules,
+    options: ValidationOptions
+  ): boolean =>
     validate(
       input,
       rules,
@@ -120,13 +135,12 @@ const validationRules = {
 
   /**
    * Return true only if all rules match.
-   *
-   * @param {Object} input
-   * @param {ValidationRules} rules
-   * @param {ValidationOptions} options
-   * @return {Boolean}
    */
-  all: (input, rules, options) =>
+  all: (
+    input: any,
+    rules: ValidationRules,
+    options: ValidationOptions
+  ): boolean =>
     validate(
       input,
       rules,
@@ -145,7 +159,11 @@ const validationRules = {
    * @param {ValidationOptions} options
    * @return {Boolean}
    */
-  any: (input, rules, options) =>
+  any: (
+    input: any,
+    rules: ValidationRules,
+    options: ValidationOptions
+  ): boolean =>
     validate(
       input,
       rules,
@@ -161,7 +179,7 @@ const validationRules = {
    * @param {any} input
    * @param {any} expectedValue
    */
-  eq: (input, expectedValue) => input == expectedValue, // eslint-disable-line eqeqeq
+  eq: (input: any, expectedValue: any): boolean => input == expectedValue, // eslint-disable-line eqeqeq
 
   /**
    * Strict equality.
@@ -169,7 +187,7 @@ const validationRules = {
    * @param {any} input
    * @param {any} expectedValue
    */
-  eqs: (input, expectedValue) => input === expectedValue,
+  eqs: (input: any, expectedValue: any): boolean => input === expectedValue,
 
   /**
    * Greater than.
@@ -177,7 +195,7 @@ const validationRules = {
    * @param {any} input
    * @param {any} value
    */
-  gt: (input, value) => input > value,
+  gt: (input: any, value: any): boolean => input > value,
 
   /**
    * Greater than or equals.
@@ -185,7 +203,7 @@ const validationRules = {
    * @param {any} input
    * @param {any} value
    */
-  gte: (input, value) => input >= value,
+  gte: (input: any, value: any): boolean => input >= value,
 
   /**
    * Less than.
@@ -193,7 +211,7 @@ const validationRules = {
    * @param {any} input
    * @param {any} value
    */
-  lt: (input, value) => input < value,
+  lt: (input: any, value: any): boolean => input < value,
 
   /**
    * Less than or equals.
@@ -201,111 +219,123 @@ const validationRules = {
    * @param {any} input
    * @param {any} value
    */
-  lte: (input, value) => input <= value,
+  lte: (input: any, value: any): boolean => input <= value,
 
   /**
    * Input is inside a range.
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  insideRange: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input > rules.min &&
-    input < rules.max,
+  insideRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input > rangeRules.min &&
+    input < rangeRules.max,
 
   /**
    * Input is within a range.
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  withinRange: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input >= rules.min &&
-    input <= rules.max,
+  withinRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input >= rangeRules.min &&
+    input <= rangeRules.max,
 
   /**
    * Input is within the min value of a range (not including the max value).
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  withinRangeMin: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input >= rules.min &&
-    input < rules.max,
+  withinRangeMin: (
+    input: any,
+    rangeRules: ValidationRuleRangeOptions
+  ): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input >= rangeRules.min &&
+    input < rangeRules.max,
 
   /**
    * Input is within the max value of a range (not including the min value).
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  withinRangeMax: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input > rules.min &&
-    input <= rules.max,
+  withinRangeMax: (
+    input: any,
+    rangeRules: ValidationRuleRangeOptions
+  ): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input > rangeRules.min &&
+    input <= rangeRules.max,
 
   /**
    * Input is outside a range.
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  outsideRange: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input < rules.min &&
-    input > rules.max,
+  outsideRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input < rangeRules.min &&
+    input > rangeRules.max,
 
   /**
    * Input is in outer range.
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  outerRange: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input <= rules.min &&
-    input >= rules.max,
+  outerRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input <= rangeRules.min &&
+    input >= rangeRules.max,
 
   /**
    * Input is outer range including the min value (not including the max value).
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  outerRangeMin: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input <= rules.min &&
-    input > rules.max,
+  outerRangeMin: (
+    input: any,
+    rangeRules: ValidationRuleRangeOptions
+  ): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input <= rangeRules.min &&
+    input > rangeRules.max,
 
   /**
    * Input is outer range including the max value (not including the min value).
    *
    * @param {any} input
-   * @param {RangeRules} rules
+   * @param {ValidationRuleRangeOptions} rules
    * @return {Boolean}
    */
-  outerRangeMax: (input, rules) =>
-    has(rules, "min") &&
-    has(rules, "max") &&
-    input < rules.min &&
-    input >= rules.max,
+  outerRangeMax: (
+    input: any,
+    rangeRules: ValidationRuleRangeOptions
+  ): boolean =>
+    has(rangeRules, "min") &&
+    has(rangeRules, "max") &&
+    input < rangeRules.min &&
+    input >= rangeRules.max,
 
   /**
    * RegExp test.
@@ -314,7 +344,11 @@ const validationRules = {
    * @param {String|RegExp} re
    * @return {Boolean}
    */
-  re: (input, re, { caseSensitive = false }) =>
+  re: (
+    input: any,
+    re: string | RegExp,
+    { caseSensitive = false }: ValidationOptions
+  ): boolean =>
     (re instanceof RegExp
       ? re
       : new RegExp(re, !caseSensitive ? "i" : undefined)
@@ -327,9 +361,13 @@ const validationRules = {
    * @param {Number|String} value
    * @return {Boolean}
    */
-  startsWith: (input, value, { caseSensitive = false }) =>
+  startsWith: (
+    input: any,
+    value: string | number,
+    { caseSensitive = false }: ValidationOptions
+  ): boolean =>
     new RegExp(
-      `^${escapeRegExp(value)}`,
+      `^${escapeRegExp(`${value}`)}`,
       !caseSensitive ? "i" : undefined
     ).test(input + ""),
 
@@ -341,9 +379,13 @@ const validationRules = {
    * @param {Object} options
    * @return {Boolean}
    */
-  endsWith: (input, value, { caseSensitive = false }) =>
+  endsWith: (
+    input: any,
+    value: string | number,
+    { caseSensitive = false }: ValidationOptions
+  ): boolean =>
     new RegExp(
-      `${escapeRegExp(value)}$`,
+      `${escapeRegExp(`${value}`)}$`,
       !caseSensitive ? "i" : undefined
     ).test(input + ""),
 
@@ -355,7 +397,11 @@ const validationRules = {
    * @param {Object} options
    * @return {Boolean}
    */
-  contains: (input, value, { caseSensitive = false }) =>
+  contains: (
+    input: any,
+    value: any,
+    { caseSensitive = false }: ValidationOptions
+  ): boolean =>
     isArray(input)
       ? input.indexOf(value) > -1
       : caseSensitive
@@ -369,7 +415,7 @@ const validationRules = {
    * @param {any} values
    * @return {Boolean}
    */
-  includesAny: (input, values) =>
+  includesAny: (input: any, values: any[]): boolean =>
     anyInArray(castArray(input), ...castArray(values)),
 
   /**
@@ -379,7 +425,7 @@ const validationRules = {
    * @param {any} values
    * @return {Boolean}
    */
-  includesAll: (input, values) =>
+  includesAll: (input: any, values: any[]): boolean =>
     allInArray(castArray(input), ...castArray(values)),
 
   /**
@@ -389,7 +435,7 @@ const validationRules = {
    * @param {CheckType} type
    * @return {Boolean}
    */
-  type: (input, type) =>
+  type: (input: any, type: string): boolean =>
     has(CHECK_TYPE, type, isFunction) && CHECK_TYPE[type].call(input, input),
 
   /**
@@ -397,10 +443,14 @@ const validationRules = {
    * value is one or many possible values.
    *
    * @param {Object} input
-   * @param {Object} props
+   * @param {ValidationRules} props
    * @return {Boolean}
    */
-  has: (input, props, options) => {
+  has: (
+    input: any,
+    props: ValidationRules,
+    options: ValidationOptions
+  ): boolean => {
     let isValid = false;
     let totalProps = 0;
     let countMatched = 0;
@@ -493,7 +543,7 @@ const validationRules = {
         // });
 
         let arrayPropValue = castArray(propValue);
-        let checkEachValueExists = castArray(props[propName]);
+        let checkEachValueExists = castArray((props as POJO)[propName]);
 
         // Match if all values are within
         if (has(options, "matchAll", isTruthy)) {
@@ -527,12 +577,12 @@ const validationRules = {
 
   /**
    * Perform extra validation rules on the prop's values.
-   *
-   * @param {Object} input
-   * @param {Object} props
-   * @return {Boolean}
    */
-  match: (input, props, options) => {
+  match: (
+    input: any,
+    props: ValidationRules,
+    options: ValidationOptions
+  ): boolean => {
     let isValid = false;
     let countMatched = 0;
     let totalProps = 0;
@@ -543,7 +593,7 @@ const validationRules = {
 
       // Iterate through all the shallow props given
       for (let index = 0; index < totalProps; index++) {
-        const propName = propNames[index];
+        const propName: string = propNames[index];
 
         // Skip missing props
         if (
@@ -555,7 +605,7 @@ const validationRules = {
           continue;
         }
 
-        const rules = props[propName];
+        const rules: ValidationRules = get(props, propName);
 
         // Use the input or the extra meta data passed in the options
         let propValue = has(input, propName)
@@ -589,23 +639,30 @@ const validationRules = {
 /**
  * Validate an object against a set of rules.
  *
- * You can also pass an options object to affect the rules.
- *
- * @param {Object} input
- * @param {ValidationRules} rules
- * @param {ValidationOptions} options
+ * You can also pass an options object to affect how rules are enforced.
  */
-function validate(input, rules, options) {
+export function validate(
+  input: any,
+  rules: ValidationRules,
+  options?: ValidationOptions
+): boolean {
   const _options = generateOptions({
     ...options,
-    _depth: has(options, "_depth", isInteger) ? options._depth : 0
+    _depth: get(options, "_depth", 0)
   });
   let totalRules = 1;
   let matchedRules = [];
   let countMatchedRules = 0;
   let isValid = false;
 
-  const matchedRule = ({ ruleName, ruleValue, input, options, isValid }) => {
+  // Increment number of matched rules (and if debug is enabled, add to the result list of matchedRules)
+  const matchedRule = ({
+    ruleName,
+    ruleValue,
+    input,
+    options,
+    isValid
+  }: ValidationMatchedRule): void => {
     if (isValid) {
       countMatchedRules++;
     }
@@ -626,7 +683,7 @@ function validate(input, rules, options) {
 
   // Rules is function
   if (isFunction(rules)) {
-    isValid = rules.call(undefined, input, rules, _options);
+    isValid = rules(input, rules, _options);
 
     if (isValid) {
       matchedRule({
@@ -645,20 +702,16 @@ function validate(input, rules, options) {
 
     for (let index = 0; index < totalRules; index++) {
       const ruleName = ruleNames[index];
-      const ruleValue = rules[ruleName];
+      const ruleValue = (rules as ValidationRulesObject)[ruleName];
 
       // Use a custom function
       if (isFunction(ruleValue)) {
-        isValid = ruleValue.call(undefined, input, ruleValue, _options);
+        isValid = (ruleValue as ValidationFn)(input, ruleValue, _options);
       }
       // Use a validation rule
       else if (has(validationRules, ruleName, isFunction)) {
-        isValid = validationRules[ruleName].call(
-          undefined,
-          input,
-          ruleValue,
-          _options
-        );
+        const verifyRuleFn = validationRules[ruleName] as ValidationFn;
+        isValid = verifyRuleFn(input, ruleValue, _options);
       }
 
       if (isValid) {
@@ -683,31 +736,10 @@ function validate(input, rules, options) {
 
   const output = has(_options, "negateMatch", isTruthy) ? !isValid : isValid;
 
-  // if (has(_options, "debug", isTruthy)) {
-  //   console.log("validate", {
-  //     input,
-  //     rules,
-  //     options: _options,
-  //     matchAll: _options.matchAll,
-  //     negateMatch: _options.negateMatch,
-  //     totalRules,
-  //     countMatchedRules,
-  //     isValid,
-  //     output,
-  //     matchedRules
-  //   });
-  // }
-
   return output;
 }
 
-module.exports = {
-  default: validate,
-  DEFAULT_OPTIONS,
-  CHECK_TYPE,
-  validate,
-  validationRules
-};
+export default validate;
 
 /**
  * An object which contains the validation rules to apply.

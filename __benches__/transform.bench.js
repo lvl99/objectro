@@ -1,5 +1,5 @@
 const objectMapper = require("object-mapper");
-const { transform } = require("../lib/transform");
+const { transform } = require("../dist/objectro.cjs");
 
 let testItem = {
   name: "Matt Scheurich",

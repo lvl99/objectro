@@ -1,4 +1,4 @@
-const { validate } = require("../../../lib/validate");
+import validate from "../../../lib/validate";
 
 describe("validate#contains", () => {
   it("should match case insensitive value by default", () => {

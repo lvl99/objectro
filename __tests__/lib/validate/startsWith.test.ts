@@ -1,6 +1,6 @@
-const { validate } = require("../../../lib/validate");
+import validate from "../../../lib/validate";
 
-describe("validate#endsWith", () => {
+describe("validate#startsWith", () => {
   it("should match case insensitive value by default", () => {
     expect(
       validate(
@@ -10,7 +10,7 @@ describe("validate#endsWith", () => {
         {
           match: {
             propName: {
-              endsWith: "value"
+              startsWith: "exact"
             }
           }
         }
@@ -27,7 +27,7 @@ describe("validate#endsWith", () => {
         {
           match: {
             propName: {
-              endsWith: "value"
+              startsWith: "exact"
             }
           }
         },
@@ -47,7 +47,7 @@ describe("validate#endsWith", () => {
         {
           match: {
             propName: {
-              endsWith: "Value"
+              startsWith: "Exact"
             }
           }
         },
