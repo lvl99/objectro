@@ -12,10 +12,9 @@ export default [
         file: pkg.browser,
         format: "umd",
         name: "objectro",
-        compact: true,
-        exports: "named"
+        compact: true
       },
-      { file: pkg.main, format: "cjs", compact: true, exports: "named" },
+      { file: pkg.main, format: "cjs", compact: true },
       { file: pkg.module, format: "esm", compact: true }
     ],
     plugins: [
