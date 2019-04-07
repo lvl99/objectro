@@ -1,6 +1,6 @@
 # Objectro
 
-🔀Transform and ☑️validate 🎁objects.
+🔀 Transform and ☑️ validate 🎁 objects.
 
 ## Why?
 

@@ -15,7 +15,11 @@ export interface TransformMap {
   [fromPropName: string]: Transform | Transform[];
 }
 
-export type ValidateValueFn = (input: any) => boolean;
+export type ValidateValueFn = (
+  input: any,
+  rules?: ValidationRules,
+  options?: ValidationOptions
+) => boolean;
 
 export interface ValidationData {
   [propName: string]: any;
