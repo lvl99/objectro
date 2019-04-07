@@ -12,7 +12,7 @@
     "build": "tsc && rollup -c",
     "lint": "eslint 'index.ts' 'lib/**/*.ts' -c .eslintrc.json --ignore-path .lintignore",
     "lint:fix": "eslint 'index.ts' 'lib/**/*.ts' -c .eslintrc.json --ignore-path .lintignore --fix",
-    "test": "npm run lint && jest",
+    "test": "npm run lint && jest --coverage",
     "test:watch": "jest --watch",
     "test:bench": "barbell",
     "publish": "npm run build && npm run test && npm publish"

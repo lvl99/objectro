@@ -3,5 +3,6 @@ module.exports = {
   transform: {
     "^.+\\.(js|jsx|mjs)$": "babel-jest",
     "^.+\\.tsx?$": "ts-jest"
-  }
+  },
+  collectCoverageFrom: ["lib/**/*.ts"]
 };

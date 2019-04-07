@@ -11,10 +11,8 @@ node_modules
 logs
 
 # Tests
+coverage
 __benches__
-__tests__
-*.test.ts
-*.test.js
 *.bench.js
 
 # Config
