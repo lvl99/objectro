@@ -1,17 +1,21 @@
 {
   "name": "objectro",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "description": "Transform and validate objects",
   "author": "Matt Scheurich <matt@lvl99.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "browser": "./dist/objectro.umd.js",
+  "main": "./dist/objectro.cjs.js",
+  "module": "./dist/objectro.esm.js",
+  "types": "./index.d.ts",
   "scripts": {
-    "build": "webpack",
-    "lint": "eslint . --ignore-path .lintignore",
-    "lint:fix": "eslint . --ignore-path .lintignore --fix",
-    "test": "jest",
+    "build": "tsc && rollup -c",
+    "lint": "eslint 'index.ts' 'lib/**/*.ts' -c .eslintrc.json --ignore-path .lintignore",
+    "lint:fix": "eslint 'index.ts' 'lib/**/*.ts' -c .eslintrc.json --ignore-path .lintignore --fix",
+    "test": "npm run lint && jest",
     "test:watch": "jest --watch",
     "test:bench": "barbell",
-    "publish": "npm publish"
+    "publish": "npm run build && npm run test && npm publish"
   },
   "keywords": [
     "javascript",
@@ -21,7 +25,8 @@
     "restructure",
     "format",
     "filter",
-    "validate"
+    "validate",
+    "validation"
   ],
   "repository": {
     "type": "git",
@@ -29,48 +34,43 @@
   },
   "homepage": "https://github.com/lvl99/objectro",
   "bugs": "https://github.com/lvl99/objectro/issues",
-  "main": "dist/objectro.js",
-  "module": "index.js",
   "dependencies": {
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.5.0",
-    "babel-loader": "^8.0.4",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.11",
+    "@types/lodash": "^4.14.123",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
+    "babel-jest": "^24.7.1",
     "barbell": "^0.1.2",
     "chalk": "^2.4.2",
     "email-validator": "^2.0.4",
-    "eslint": "^5.8.0",
-    "eslint-config-prettier": "^3.1.0",
-    "eslint-plugin-prettier": "^3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "husky": "^1.1.2",
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
     "joi": "^14.3.0",
-    "lint-staged": "^8.0.4",
     "object-mapper": "^5.0.0",
-    "prettier": "^1.14.3",
+    "prettier": "^1.16.4",
     "prop-types": "^15.6.2",
-    "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.23.1",
-    "webpack-cli": "^3.1.2"
+    "rename-extension": "^3.0.0",
+    "rollup": "^1.9.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "ts-jest": "^24.0.2",
+    "tslib": "^1.9.3",
+    "typescript": "^3.4.2"
   },
   "husky": {
     "hooks": {
-      "post-commit": "git update-index --again",
-      "pre-commit": "lint-staged",
-      "post-merge": "npm i",
-      "pre-push": "npm test"
+      "pre-push": "npm run lint && npm run test"
     }
-  },
-  "lint-staged": {
-    "*.js": [
-      "npm run lint:fix",
-      "git add"
-    ]
   }
 }

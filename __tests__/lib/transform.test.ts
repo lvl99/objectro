@@ -1,6 +1,7 @@
-const { transform } = require("../../lib/transform");
+import { POJO, TransformFn } from "../../lib/types";
+import transform from "../../lib/transform";
 
-let testItem = {
+let testItem: POJO = {
   name: "Matt Scheurich",
   age: 35,
   dob: "1983-09-12",
@@ -35,42 +36,47 @@ describe("transform", () => {
   });
 
   it("should process maps on nested objects", () => {
-    let addIfTrue = (value, propName) =>
-      value ? { [propName]: value } : undefined;
+    let addIfTruthy = (newPropName: string): TransformFn => value =>
+      value ? { [newPropName]: value } : undefined;
     let transformedItemA = transform(testItem, {
       petPreferences: {
         cat: "cats",
-        dog: addIfTrue,
-        rat: addIfTrue
+        dog: addIfTruthy("dogs"),
+        rat: addIfTruthy("rats")
       }
     });
     expect(transformedItemA).toHaveProperty("petPreferences");
     expect(transformedItemA.petPreferences).toMatchObject({
       cats: testItem.petPreferences.cat,
-      dog: testItem.petPreferences.dog
+      dogs: testItem.petPreferences.dog
     });
+    expect(transformedItemA.petPreferences).not.toHaveProperty("rats");
 
     // Use an array to pass in string prop names
     let transformedItemB = transform(testItem, {
       petPreferences: [
         "cat",
         {
-          rat: value => ({ rats: value })
+          dog: "dogs"
+        },
+        {
+          rat: (value: any) => ({ rats: value })
         }
       ]
     });
     expect(transformedItemB).toHaveProperty("petPreferences");
     expect(transformedItemB.petPreferences).toMatchObject({
       cat: testItem.petPreferences.cat,
+      dogs: testItem.petPreferences.dog,
       rats: testItem.petPreferences.rat
     });
   });
 
   it("should map input property name using returned value of formatted function", () => {
     let transformedItem = transform(testItem, {
-      name: value => value.split(" "),
-      age: value => `${value}`,
-      dob: value => {
+      name: (value: any) => value.split(" "),
+      age: (value: any) => `${value}`,
+      dob: (value: any) => {
         let date = new Date(value);
         return {
           dob: date,
@@ -101,10 +107,15 @@ describe("transform", () => {
       {
         name: "fullName",
         age: "ageInYears",
-        dob: value => ({
+        dob: (value: any) => ({
           dateOfBirth: new Date(value)
         }),
-        notFoundOnInputObject: (value, propName, input, output) => {
+        notFoundOnInputObject: (
+          value: any,
+          propName: string,
+          input: POJO,
+          output: POJO
+        ) => {
           output.newProp = true;
         }
       },
@@ -123,15 +134,15 @@ describe("transform", () => {
 
   it("should pass the correct param values for format functions", () => {
     const transformedObject = transform(testItem, {
-      name(value, propName, input, output) {
-        expect(this).toHaveProperty(propName, value);
+      name(value: any, propName: string, input: POJO, output: POJO) {
+        expect(input).toHaveProperty(propName, value);
         expect(value).toBe(testItem.name);
         expect(propName).toBe("name");
         expect(output).toMatchObject({});
         return value;
       },
-      age(value, propName, input, output) {
-        expect(this).toHaveProperty(propName, value);
+      age(value: any, propName: string, input: POJO, output: POJO) {
+        expect(input).toHaveProperty(propName, value);
         expect(output).toHaveProperty("name", testItem.name);
         expect(output).toMatchObject({
           name: testItem.name
@@ -147,22 +158,20 @@ describe("transform", () => {
 
   it("should not allow modifying the input object in format functions; throws error when in strict mode", () => {
     transform(testItem, {
-      name(value, propName, input, output) {
+      name(value: any, propName: string, input: POJO | any) {
         "use strict";
-        expect(this).toBe(input);
         expect(() => {
           // input object is frozen using Object.freeze() and
           // should throw errors if we try to assign new values
-          this.name = "fail";
+          (input as POJO)[propName] = "fail";
         }).toThrow();
       },
-      age(value, propName, input, output) {
+      age(value: any, propName: string, input: POJO | any) {
         "use strict";
-        expect(this).toBe(input);
         expect(() => {
           // input object is frozen using Object.freeze() and
           // should throw errors if we try to remove values
-          delete this.name;
+          delete (input as POJO)[propName];
         }).toThrow();
       }
     });
@@ -188,12 +197,12 @@ describe("transform", () => {
       // Takes `test1` from input and puts it on the output as `testA`
       test1: "testA",
       // Takes `testB` from input and formats its value on the output as `testB`
-      testB: value => parseInt(value, 10),
+      testB: (value: any): number => parseInt(String(value), 10),
       // Takes `testC` from input and formats its value on the output as `testC`, `testD` and `testE`
-      testC: value => {
+      testC: (value: any): any => {
         let [testC, testD, testE] = value
           .split(",")
-          .map(val => parseInt(val, 10));
+          .map((val: string) => parseInt(val, 10));
         return {
           testC,
           testD,
@@ -213,8 +222,8 @@ describe("transform", () => {
   });
 
   it("should sequentially transform object props #1", () => {
-    const transformed = [];
-    const incrementTransformed = (value, propName) => {
+    const transformed: { propName: string; value: any }[] = [];
+    const incrementTransformed = (value: any, propName: string) => {
       transformed.push({ propName, value });
     };
 
@@ -233,8 +242,13 @@ describe("transform", () => {
   });
 
   it("should sequentially transform object props #2", () => {
-    const transformed = [];
-    const incrementTransformedFn = newPropName => (
+    const transformed: {
+      propName: string | undefined;
+      value: any;
+      newPropName: string | undefined;
+      output: any;
+    }[] = [];
+    const incrementTransformedFn = (newPropName: string): TransformFn => (
       value,
       propName,
       input,

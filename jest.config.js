@@ -1,5 +1,7 @@
 module.exports = {
+  testEnvironment: "node",
   transform: {
-    "^.+\\.es6\\.jsx?$": "babel-jest"
+    "^.+\\.(js|jsx|mjs)$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest"
   }
 };

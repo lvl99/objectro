@@ -1,4 +1,4 @@
-theme: jekyll-theme-cayman
+theme: jekyll-theme-minima
 lang: en-GB
 title: "Objectro"
 description: "Transform and validate objects"

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "es5",
+    "lib": ["esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": true,
+    "sourceMap": true
+  },
+  "include": [
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.?(test|spec).ts"
+  ]
+}

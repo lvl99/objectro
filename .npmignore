@@ -1,13 +1,21 @@
+!.gitignore
+
 .vscode
-.editorconfig
-.eslintrc.json
-.lintignore
-__tests__
-*.test.js
+.idea
+.rpt2_cache
+.DS_Store
+Thumbs.db
+
+node_modules
+*.logs
+logs
+
+# Tests
 __benches__
+__tests__
+*.test.ts
+*.test.js
 *.bench.js
-jest.config.js
-barbell.config.js
-webpack.config.js
-docs
+
+# Config
 _config.yml

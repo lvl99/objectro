@@ -1,7 +1,7 @@
-const { validate } = require("../lib/validate");
 const Joi = require("joi");
 const PropTypes = require("prop-types");
 const validateEmail = require("email-validator");
+const { validate } = require("../dist/objectro.cjs");
 
 const testObject = {
   name: "Objectro",
