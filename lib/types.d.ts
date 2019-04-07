@@ -6,7 +6,7 @@ export declare type Transform = string | TransformMap | TransformFn;
 export interface TransformMap {
     [fromPropName: string]: Transform | Transform[];
 }
-export declare type ValidateValueFn = (input: any) => boolean;
+export declare type ValidateValueFn = (input: any, rules?: ValidationRules, options?: ValidationOptions) => boolean;
 export interface ValidationData {
     [propName: string]: any;
 }
