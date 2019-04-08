@@ -567,6 +567,18 @@ describe("validate#match", () => {
       })
     ).toBe(true);
   });
+
+  it("should use a custom function to validate a property", () => {
+    expect(
+      validate(testItem, {
+        match: {
+          name: (value: any, rules?: any, options?: ValidationOptions) => {
+            return value === "Matt Scheurich";
+          }
+        }
+      })
+    ).toBe(true);
+  });
 });
 
 describe("documentation examples", () => {

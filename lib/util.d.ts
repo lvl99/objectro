@@ -1,4 +1,4 @@
-import { ValidateValueFn } from "../lib/types";
+import { ValidationRuleHasExpectedValueFn } from "../lib/types";
 /**
  * Check if input has a property by name, and can check if has an expected value.
  *
@@ -9,7 +9,7 @@ import { ValidateValueFn } from "../lib/types";
  * @param {String|Array<String|Number>} propName
  * @param {any|Function} expectedValue
  */
-export declare function has(input: any, propName: string | (string | number)[], expectedValue?: ValidateValueFn | any): boolean;
+export declare function has(input: any, propName: string | (string | number)[], expectedValue?: ValidationRuleHasExpectedValueFn | any): boolean;
 /**
  * Check if input is truthy.
  *

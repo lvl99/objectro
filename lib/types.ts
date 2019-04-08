@@ -6,20 +6,18 @@ export type TransformFn = (
   value: any,
   propName?: string,
   input?: POJO | any,
-  output?: POJO
+  output?: POJO | any
 ) => POJO | any;
 
-export type Transform = string | TransformMap | TransformFn;
+export type TransformMap = string | TransformMapObject | TransformFn;
 
-export interface TransformMap {
-  [fromPropName: string]: Transform | Transform[];
+export interface TransformMapObject {
+  [fromPropName: string]: TransformMap | TransformMap[];
 }
 
-export type ValidateValueFn = (
-  input: any,
-  rules?: ValidationRules,
-  options?: ValidationOptions
-) => boolean;
+export type ValidationRuleHasExpectedValueFn = (input: any) => boolean;
+
+export type ValidationRuleTypeFn = (input: any) => boolean;
 
 export interface ValidationData {
   [propName: string]: any;
@@ -35,17 +33,15 @@ export interface ValidationOptions {
   data?: ValidationData;
 }
 
-export interface ValidationRuleRangeOptions {
+export interface ValidationRuleRange {
   min: number;
   max: number;
 }
 
-export type ValidationRuleTypeFn = (input: any) => boolean;
-
 export type ValidationRule =
   | ValidationFn
   | ValidationRuleTypeFn
-  | ValidationRuleRangeOptions
+  | ValidationRuleRange
   | POJO;
 
 export interface ValidationRulesObject {
@@ -55,8 +51,14 @@ export interface ValidationRulesObject {
 export type ValidationRules = ValidationRule | ValidationRulesObject;
 
 export interface ValidationRuleTypeFns {
-  [typeName: string]: ValidateValueFn;
+  [typeName: string]: ValidationRuleTypeFn;
 }
+
+export type ValidationFn = (
+  input: any,
+  rules?: ValidationRules | any,
+  options?: ValidationOptions
+) => boolean;
 
 export interface ValidationMatchedRule {
   ruleName: string;
@@ -65,9 +67,3 @@ export interface ValidationMatchedRule {
   options: ValidationOptions;
   isValid: boolean;
 }
-
-export type ValidationFn = (
-  input: any,
-  rules?: ValidationRules | ValidationRule | any,
-  options?: ValidationOptions
-) => boolean;

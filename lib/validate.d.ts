@@ -27,7 +27,7 @@ export declare const validationRules: ValidationRulesObject;
  *
  * You can also pass an options object to affect how rules are enforced.
  */
-export declare function validate(input: any, rules: ValidationRules, options?: ValidationOptions): boolean;
+export declare function validate(input: any, rules: ValidationRules | any, options?: ValidationOptions): boolean;
 export default validate;
 /**
  * An object which contains the validation rules to apply.

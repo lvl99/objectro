@@ -4,7 +4,7 @@ import isNaN from "lodash/isNaN";
 import isNumber from "lodash/isNumber";
 import isInteger from "lodash/isInteger";
 import isFunction from "lodash/isFunction";
-import { ValidateValueFn } from "../lib/types";
+import { ValidationRuleHasExpectedValueFn } from "../lib/types";
 
 /**
  * Check if input has a property by name, and can check if has an expected value.
@@ -19,13 +19,13 @@ import { ValidateValueFn } from "../lib/types";
 export function has(
   input: any,
   propName: string | (string | number)[],
-  expectedValue?: ValidateValueFn | any
+  expectedValue?: ValidationRuleHasExpectedValueFn | any
 ): boolean {
   return expectedValue === undefined
     ? hasIn(input, propName)
     : hasIn(input, propName) &&
         (isFunction(expectedValue)
-          ? !!expectedValue.call(undefined, get(input, propName))
+          ? !!expectedValue(get(input, propName))
           : get(input, propName) === expectedValue);
 }
 

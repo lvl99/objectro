@@ -1,4 +1,4 @@
-# Objectro
+# 🔀☑️🎁 Objectro
 
 🔀 Transform and ☑️ validate 🎁 objects.
 
@@ -7,6 +7,8 @@
 - Destructure/restructure objects based on a map
 - Format specific values (sanitise, normalise, etc.)
 - Validate an object based on rules
+
+Read more in the [docs](https://lvl99.github.io/objectro/).
 
 ## How?
 

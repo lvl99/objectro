@@ -26,9 +26,10 @@ import {
   ValidationOptions,
   ValidationRules,
   ValidationRulesObject,
-  ValidationRuleRangeOptions,
+  ValidationRuleRange,
   ValidationRuleTypeFns,
-  ValidationMatchedRule
+  ValidationMatchedRule,
+  ValidationRuleTypeFn
 } from "../lib/types";
 import {
   has,
@@ -225,10 +226,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is inside a range.
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  insideRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+  insideRange: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input > rangeRules.min &&
@@ -238,10 +239,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is within a range.
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  withinRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+  withinRange: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input >= rangeRules.min &&
@@ -251,13 +252,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is within the min value of a range (not including the max value).
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  withinRangeMin: (
-    input: any,
-    rangeRules: ValidationRuleRangeOptions
-  ): boolean =>
+  withinRangeMin: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input >= rangeRules.min &&
@@ -267,13 +265,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is within the max value of a range (not including the min value).
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  withinRangeMax: (
-    input: any,
-    rangeRules: ValidationRuleRangeOptions
-  ): boolean =>
+  withinRangeMax: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input > rangeRules.min &&
@@ -283,10 +278,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is outside a range.
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  outsideRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+  outsideRange: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input < rangeRules.min &&
@@ -296,10 +291,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is in outer range.
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  outerRange: (input: any, rangeRules: ValidationRuleRangeOptions): boolean =>
+  outerRange: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input <= rangeRules.min &&
@@ -309,13 +304,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is outer range including the min value (not including the max value).
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  outerRangeMin: (
-    input: any,
-    rangeRules: ValidationRuleRangeOptions
-  ): boolean =>
+  outerRangeMin: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input <= rangeRules.min &&
@@ -325,13 +317,10 @@ export const validationRules: ValidationRulesObject = {
    * Input is outer range including the max value (not including the min value).
    *
    * @param {any} input
-   * @param {ValidationRuleRangeOptions} rules
+   * @param {ValidationRuleRange} rules
    * @return {Boolean}
    */
-  outerRangeMax: (
-    input: any,
-    rangeRules: ValidationRuleRangeOptions
-  ): boolean =>
+  outerRangeMax: (input: any, rangeRules: ValidationRuleRange): boolean =>
     has(rangeRules, "min") &&
     has(rangeRules, "max") &&
     input < rangeRules.min &&
@@ -436,7 +425,8 @@ export const validationRules: ValidationRulesObject = {
    * @return {Boolean}
    */
   type: (input: any, type: string): boolean =>
-    has(CHECK_TYPE, type, isFunction) && CHECK_TYPE[type].call(input, input),
+    has(CHECK_TYPE, type, isFunction) &&
+    (CHECK_TYPE[type] as ValidationRuleTypeFn)(input),
 
   /**
    * Check if input has existence of one or many properties, or property
@@ -536,12 +526,6 @@ export const validationRules: ValidationRulesObject = {
             ? get(options.data, propName)
             : undefined;
 
-        // console.log("validationRule.has: object", {
-        //   propName,
-        //   propValue,
-        //   matchType: options.matchAll ? "all" : "one"
-        // });
-
         let arrayPropValue = castArray(propValue);
         let checkEachValueExists = castArray((props as POJO)[propName]);
 
@@ -553,12 +537,6 @@ export const validationRules: ValidationRulesObject = {
         else {
           isValid = anyInArray(arrayPropValue, ...checkEachValueExists);
         }
-
-        // console.log("validationRule.has", {
-        //   arrayPropValue,
-        //   checkEachValueExists,
-        //   isValid
-        // });
 
         if (isValid) {
           countMatched++;
@@ -643,7 +621,7 @@ export const validationRules: ValidationRulesObject = {
  */
 export function validate(
   input: any,
-  rules: ValidationRules,
+  rules: ValidationRules | any,
   options?: ValidationOptions
 ): boolean {
   const _options = generateOptions({
