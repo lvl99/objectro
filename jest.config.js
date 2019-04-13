@@ -4,5 +4,7 @@ module.exports = {
     "^.+\\.(js|jsx|mjs)$": "babel-jest",
     "^.+\\.tsx?$": "ts-jest"
   },
-  collectCoverageFrom: ["lib/**/*.ts"]
+  collectCoverageFrom: ["lib/**/*.ts"],
+  coverageReporters: ["html"],
+  watchPathIgnorePatterns: ["<rootDir>/node_modules/"]
 };
