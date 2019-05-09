@@ -433,12 +433,12 @@ export const validationRules: ValidationRulesObject = {
    * value is one or many possible values.
    *
    * @param {Object} input
-   * @param {ValidationRules} props
+   * @param {Object | any[] | any} props
    * @return {Boolean}
    */
   has: (
     input: any,
-    props: ValidationRules,
+    props: POJO | any[] | any,
     options: ValidationOptions
   ): boolean => {
     let isValid = false;
@@ -447,58 +447,55 @@ export const validationRules: ValidationRulesObject = {
 
     // Check if has multiple props
     if (isString(props) || isArray(props)) {
+      const _props = castArray(props);
+
       // Array
-      if (isArray(props)) {
-        totalProps = props.length;
+      totalProps = _props.length;
 
-        // console.log("validationRule.has: array", {
-        //   props,
-        //   totalProps
-        // });
+      // console.log("validationRule.has: array", {
+      //   props,
+      //   totalProps
+      // });
 
-        // Match only if all properties exist
-        if (has(options, "matchAll", isTruthy)) {
-          for (let index = 0; index < totalProps; index++) {
-            const propName = props[index];
+      // Match only if all properties exist
+      if (has(options, "matchAll", isTruthy)) {
+        for (let index = 0; index < totalProps; index++) {
+          const propName = _props[index];
 
-            if (
-              has(options, "skipMissingProps", isTruthy) &&
-              !has(input, propName) &&
-              !has(options, `data.${propName}`)
-            ) {
-              totalProps--;
-              continue;
-            }
-
-            countMatched += has(input, propName) ? 1 : 0;
+          if (
+            has(options, "skipMissingProps", isTruthy) &&
+            !has(input, propName) &&
+            !has(options, `data.${propName}`)
+          ) {
+            totalProps--;
+            continue;
           }
 
-          isValid = countMatched === totalProps;
+          countMatched +=
+            has(input, propName) || has(options, `data.${propName}`) ? 1 : 0;
         }
-        // Match if any one property exists
-        else {
-          for (let index = 0; index < totalProps; index++) {
-            const propName = props[index];
 
-            if (
-              has(options, "skipMissingProps", isTruthy) &&
-              !has(input, propName) &&
-              !has(options, ["data", propName])
-            ) {
-              totalProps--;
-              continue;
-            }
-
-            if (has(input, propName)) {
-              isValid = true;
-              break;
-            }
-          }
-        }
+        isValid = countMatched === totalProps;
       }
-      // String
+      // Match if any one property exists
       else {
-        isValid = has(input, props);
+        for (let index = 0; index < totalProps; index++) {
+          const propName = _props[index];
+
+          if (
+            has(options, "skipMissingProps", isTruthy) &&
+            !has(input, propName) &&
+            !has(options, ["data", propName])
+          ) {
+            totalProps--;
+            continue;
+          }
+
+          if (has(input, propName) || has(options, ["data", propName])) {
+            isValid = true;
+            break;
+          }
+        }
       }
     }
     // Check if has props with specific values
@@ -522,8 +519,8 @@ export const validationRules: ValidationRulesObject = {
         let propValue =
           isArray(input) || has(input, propName)
             ? get(input, propName)
-            : has(options, `data.${propName}`)
-            ? get(options.data, propName)
+            : has(options, ["data", propName])
+            ? get(options, ["data", propName])
             : undefined;
 
         let arrayPropValue = castArray(propValue);

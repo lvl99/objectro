@@ -49,6 +49,109 @@ const testOptions = (moreOptions: ValidationOptions): ValidationOptions => ({
   ...moreOptions
 });
 
+describe("validate#has", () => {
+  it("should check if object has a value", () => {
+    expect(
+      validate(testItem, {
+        has: "skills"
+      })
+    ).toBe(true);
+  });
+
+  it("should check if an object has a nested value", () => {
+    expect(
+      validate(testItem, {
+        has: "skills.programming" // bloody well hope so
+      })
+    ).toBe(true);
+  });
+
+  it("should check if an object's property has a specific value", () => {
+    expect(
+      validate(testItem, {
+        has: {
+          age: 35
+        }
+      })
+    ).toBe(true);
+  });
+
+  it("should check if an object's property has any of the specified values", () => {
+    expect(
+      validate(testItem, {
+        any: {
+          has: {
+            "skills.programming": ["html", "css", "javascript"]
+          }
+        }
+      })
+    ).toBe(true);
+  });
+
+  it("should check if an object's property has all specifed values", () => {
+    expect(
+      validate(testItem, {
+        all: {
+          has: {
+            "skills.programming": ["html", "css", "javascript"]
+          }
+        }
+      })
+    ).toBe(true);
+  });
+
+  it("should fallback to the provided data object's property if the target object doesn't have the property", () => {
+    // Has property
+    expect(
+      validate(
+        testItem,
+        {
+          has: "testFallback"
+        },
+        {
+          data: {
+            testFallback: true
+          }
+        }
+      )
+    ).toBe(true);
+
+    // Has property with specific value
+    expect(
+      validate(
+        testItem,
+        {
+          has: {
+            testFallback: true
+          }
+        },
+        {
+          data: {
+            testFallback: true
+          }
+        }
+      )
+    ).toBe(true);
+
+    // Has property with specific values
+    expect(
+      validate(
+        testItem,
+        {
+          has: {
+            testFallback: [false, true]
+          }
+        },
+        {
+          data: {
+            testFallback: true
+          }
+        }
+      )
+    ).toBe(true);
+  });
+});
+
 describe("validate#type", () => {
   let declaredVariableWithNoValueAssigned;
   let typeTests: TypeTests = {
