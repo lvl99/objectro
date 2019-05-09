@@ -5,6 +5,6 @@ module.exports = {
     "^.+\\.tsx?$": "ts-jest"
   },
   collectCoverageFrom: ["lib/**/*.ts"],
-  coverageReporters: ["html"],
+  coverageReporters: ["text-summary", "html"],
   watchPathIgnorePatterns: ["<rootDir>/node_modules/"]
 };
