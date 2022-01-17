@@ -35,7 +35,7 @@
   "homepage": "https://github.com/lvl99/objectro",
   "bugs": "https://github.com/lvl99/objectro/issues",
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
