@@ -1,17 +1,95 @@
 # API
 
+## Get
+
+Retrieve an object's property value. Could be a shallow property or a nested property.
+
+```
+  objectro.get(
+    input: object
+      | function
+      | (object | function)[],
+    prop: string
+      | number
+      | (string | number)[],
+    defaultValue?: any
+  )
+```
+
+```javascript
+const objectro = require("objectro").default;
+
+const input = {
+  an: {
+    example: {
+      of: [
+        {
+          nested: {
+            objects: [1, 2, 3]
+          }
+        }
+      ]
+    }
+  }
+};
+
+get(input, "an.example.of[0].nested.objects[2]");
+// -> 3
+```
+
+## Set
+
+Assign an object's property value. Could be a shallow property or a nested property.
+
+```
+  objectro.get(
+    input: object
+      | function
+      | any[],
+    prop: string
+      | number
+      | (string | number)[],
+    value: any
+  )
+```
+
+```javascript
+const objectro = require("objectro").default;
+
+const input = {
+  an: {
+    example: {
+      of: [
+        {
+          nested: {
+            objects: [1, 2, 3]
+          }
+        }
+      ]
+    }
+  }
+};
+
+set(input, "an.example.of[0].nested.objects[2]", "nice!");
+
+get(input, "an.example.of[0].nested.objects[2]");
+// -> "nice!"
+```
+
 ## Transform
+
+Transforming allows you to take an input object and describe how you want its property names and values to be reformatted.
 
 ```
   objectro.transform(
     input: object,
     propertyName: string
-      | Array<string>
+      | number
+      | string[]
+      | number[]
       | TransformMap
     ): object
 ```
-
-Transforming allows you to take an input object and describe how you want its property names and values to be reformatted.
 
 Transforming will allow you to:
 

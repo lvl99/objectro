@@ -57,8 +57,8 @@ objectro.transform(
 objectro.validate(
   {
     name: "Objectro",
-    version: "1.0.6",
-    lastUpdated: "2019-05-09",
+    version: "1.1.0",
+    lastUpdated: "2022-01-09",
     keywords: ["transform", "validate", "object", "javascript"],
     randomNumber: 123,
     nestedObject: {
@@ -117,7 +117,8 @@ Read more in the [docs](https://lvl99.github.io/objectro/).
 ### Browser
 
 ```html
-<script src="//unpkg.com/objectro@1.0.6/dist/objectro.umd.js"></script>
+<script src="//unpkg.com/objectro@1.1.0/dist/objectro.umd.js"></script>
+
 <script>
   // window.objectro should then be available
   console.log(objectro);

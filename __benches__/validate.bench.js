@@ -77,7 +77,7 @@ const objectroSchema = {
 
 suite("validate object schema", () => {
   test("joi", () => {
-    Joi.validate(testObject, joiSchema);
+    joiSchema.validate(testObject);
   });
 
   test("propTypes", () => {

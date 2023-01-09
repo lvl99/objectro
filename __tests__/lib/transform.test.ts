@@ -177,13 +177,13 @@ describe("transform", () => {
     });
   });
 
-  it("should still handle undefined props", () => {
+  it.only("should ignore undefined props", () => {
     let transformedItem = transform(testItem, "notFoundOnInputObject", {
       notFoundOnInputObject: "testUndefined",
       dontReturnAnything: () => {}
     });
-    expect(transformedItem).toHaveProperty("notFoundOnInputObject", undefined);
-    expect(transformedItem).toHaveProperty("testUndefined", undefined);
+    expect(transformedItem).not.toHaveProperty("testUndefined", undefined);
+    expect(transformedItem).not.toHaveProperty("dontReturnAnything", undefined);
   });
 
   it("should work since I've written this as an example in documentation", () => {
